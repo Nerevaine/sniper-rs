@@ -1,0 +1,8 @@
+C:\Users\14690\rust_projects\rust-grpc\target\debug\deps\libsolana_config_program-abe3ef6849304bf3.rmeta: C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\solana-config-program-2.2.7\src\lib.rs C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\solana-config-program-2.2.7\src\config_instruction.rs C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\solana-config-program-2.2.7\src\config_processor.rs C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\solana-config-program-2.2.7\src\date_instruction.rs
+
+C:\Users\14690\rust_projects\rust-grpc\target\debug\deps\solana_config_program-abe3ef6849304bf3.d: C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\solana-config-program-2.2.7\src\lib.rs C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\solana-config-program-2.2.7\src\config_instruction.rs C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\solana-config-program-2.2.7\src\config_processor.rs C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\solana-config-program-2.2.7\src\date_instruction.rs
+
+C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\solana-config-program-2.2.7\src\lib.rs:
+C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\solana-config-program-2.2.7\src\config_instruction.rs:
+C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\solana-config-program-2.2.7\src\config_processor.rs:
+C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\solana-config-program-2.2.7\src\date_instruction.rs:

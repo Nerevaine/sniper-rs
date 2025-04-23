@@ -1,0 +1,10 @@
+C:\Users\14690\rust_projects\rust-grpc\target\debug\deps\libserde_bytes-99b81d49ddcc5a3c.rmeta: C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes-0.11.17\src\lib.rs C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes-0.11.17\src\bytearray.rs C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes-0.11.17\src\bytes.rs C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes-0.11.17\src\de.rs C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes-0.11.17\src\ser.rs C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes-0.11.17\src\bytebuf.rs
+
+C:\Users\14690\rust_projects\rust-grpc\target\debug\deps\serde_bytes-99b81d49ddcc5a3c.d: C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes-0.11.17\src\lib.rs C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes-0.11.17\src\bytearray.rs C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes-0.11.17\src\bytes.rs C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes-0.11.17\src\de.rs C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes-0.11.17\src\ser.rs C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes-0.11.17\src\bytebuf.rs
+
+C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes-0.11.17\src\lib.rs:
+C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes-0.11.17\src\bytearray.rs:
+C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes-0.11.17\src\bytes.rs:
+C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes-0.11.17\src\de.rs:
+C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes-0.11.17\src\ser.rs:
+C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes-0.11.17\src\bytebuf.rs:

@@ -1,0 +1,8 @@
+C:\Users\14690\rust_projects\rust-grpc\target\debug\deps\spl_discriminator-0e2954d95b8eed15.dll: C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\spl-discriminator-0.4.1\src\lib.rs C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\spl-discriminator-0.4.1\src\discriminator.rs
+
+C:\Users\14690\rust_projects\rust-grpc\target\debug\deps\libspl_discriminator-0e2954d95b8eed15.rlib: C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\spl-discriminator-0.4.1\src\lib.rs C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\spl-discriminator-0.4.1\src\discriminator.rs
+
+C:\Users\14690\rust_projects\rust-grpc\target\debug\deps\spl_discriminator-0e2954d95b8eed15.d: C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\spl-discriminator-0.4.1\src\lib.rs C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\spl-discriminator-0.4.1\src\discriminator.rs
+
+C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\spl-discriminator-0.4.1\src\lib.rs:
+C:\Users\14690\.cargo\registry\src\index.crates.io-6f17d22bba15001f\spl-discriminator-0.4.1\src\discriminator.rs:

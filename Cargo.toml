@@ -1,0 +1,13 @@
+[package]
+name = "rust-grpc"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tonic = { version = "0.10", features = ["tls"] }
+prost = "0.12"
+tokio = { version = "1.36", features = ["full"] }
+hyper-rustls = "0.24"
+dotenvy = "0.15"
+yellowstone-grpc-proto = "6.0.0"
+openssl = { version = "0.10", features = ["vendored"] }
