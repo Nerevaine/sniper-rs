@@ -11,3 +11,10 @@ hyper-rustls = "0.24"
 dotenvy = "0.15"
 yellowstone-grpc-proto = "6.0.0"
 openssl = { version = "0.10", features = ["vendored"] }
+futures = "0.3"
+serde_json = "1.0"
+solana-sdk = "2.2.1"
+solana-program-runtime = "2.2.1"
+solana-feature-set = "2.2.1"
+yellowstone-grpc-client = "6.0.0"
+

@@ -6,21 +6,26 @@ use yellowstone_grpc_proto::prelude::{
     subscribe_request_filter_accounts_filter::Filter as AccountsFilter,
 };
 use futures::StreamExt;
+use dotenvy::dotenv; // 导入 dotenvy
+use std::env;        // 导入标准库的 env 模块
 
-#[tokio::main]
+#[tokio::main] // 使用 tokio 的 main 宏来设置异步运行时
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // 创建 gRPC 客户端连接
-    let channel = Channel::from_static("https://api.rpcpool.com:443")
-        .connect()
-        .await?;
+    // 在程序启动时加载 .env 文件中的环境变量
+    dotenv().ok(); // .ok() 会忽略加载 .env 文件时可能发生的错误（比如文件不存在）
 
-    let mut client = GeyserClient::new(channel);
+    println!("项目初始化完成，准备连接 Yellowstone gRPC...");
 
-    // 这里可以调用客户端方法，例如 get_slot、subscribe 等
+    // 尝试读取环境变量（仅用于测试）
+    let api_key = env::var("HELIUS_API_KEY").expect("需要设置 HELIUS_API_KEY 环境变量");
+    let grpc_endpoint = env::var("YELLOWSTONE_GRPC_ENDPOINT").expect("需要设置 YELLOWSTONE_GRPC_ENDPOINT 环境变量");
 
-    subscribe_accounts(&mut client).await?;
+    println!("Helius API Key (前缀): {}", &api_key[..std::cmp::min(5, api_key.len())]); // 只打印前5个字符，避免泄露
+    println!("Yellowstone gRPC Endpoint: {}", grpc_endpoint);
 
-    Ok(())
+    // TODO: 在这里添加 gRPC 连接逻辑
+
+    Ok(()) // main 函数成功返回
 }
 
 async fn subscribe_accounts(client: &mut GeyserClient<Channel>) -> Result<(), Box<dyn std::error::Error>> {
@@ -33,26 +38,28 @@ async fn subscribe_accounts(client: &mut GeyserClient<Channel>) -> Result<(), Bo
     accounts.insert(
         "client".to_string(),
         SubscribeRequestFilterAccounts {
-            account: vec![pubkey],
-            owner: vec![],
+            account: vec![pubkey], // 订阅的账户公钥
+            owner: vec![], // 账户所有者过滤条件
             filters: vec![
                 SubscribeRequestFilterAccountsFilter {
-                    filter: Some(AccountsFilter::TokenAccountState(true)),
+                    filter: Some(AccountsFilter::TokenAccountState(true)), // 账户状态过滤条件
                 }
             ],
-            nonempty_txn_signature: None,
+            nonempty_txn_signature: None, // 交易签名过滤条件
         },
     );
 
     let request = SubscribeRequest {
         accounts,
-        commitment: Some(CommitmentLevel::Processed as i32),
+        commitment: Some(CommitmentLevel::Processed as i32), // 承诺级别
         ..Default::default()
     };
 
+    // 发送订阅请求并接收流
     let (mut tx, mut stream) = client.subscribe_with_request(Some(request)).await?;
     println!("🚀 Stream started.");
 
+    // 处理接收到的更新消息
     while let Some(msg) = stream.next().await {
         match msg {
             Ok(update) => handle_update(update),

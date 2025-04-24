@@ -1,1 +1,0 @@
-"sh" "-c" "exec \"$0\" \"$@\"" "C:\\Users\\14690\\.cargo\\registry\\src\\index.crates.io-6f17d22bba15001f\\protobuf-src-1.1.0+21.5\\protobuf\\configure" "--prefix=C:\\Users\\14690\\rust_projects\\rust-grpc\\target\\debug\\build\\protobuf-src-7a0cb23e34bf1213\\out\\install" "--disable-shared" "--enable-static" "--disable-maintainer-mode"
