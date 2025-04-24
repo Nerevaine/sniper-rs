@@ -58,23 +58,16 @@ fn main() {
     }
 }
 ```
-
-
 ### 待解决问题
 
 #### 1. 项目依赖编译问题
 
 **问题描述：**
-项目依赖 `protobuf-src v1.1.0+21.5` 无法正常编译。
+项目依赖 `protobuf-src v1.1.0+21.5` 在 Windows 环境下编译失败，具体错误为路径不安全。
 
-**当前环境：**
-- 已安装 protoc
-  - 版本：30.2
-  - 安装路径：`C:\Users\14690\Desktop\protoc-30.2-win64`
-  - 环境变量已配置
-
-**错误信息：**
+**错误详情：**
 ```bash
+configure: error: unsafe srcdir value: 'C:\Users\14690\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\protobuf-src-1.1.0+21.5\protobuf'
 error: failed to run custom build command for `protobuf-src v1.1.0+21.5`                       
 
 Caused by:
