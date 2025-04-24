@@ -58,7 +58,24 @@ fn main() {
     }
 }
 ```
-##### 其他事项
 
-* 一般的git项目中要增加.gitignore
-* rust项目中，通常target文件夹需要忽略
+
+### 待解决问题
+
+#### 1. 项目依赖编译问题
+
+**问题描述：**
+项目依赖 `protobuf-src v1.1.0+21.5` 无法正常编译。
+
+**当前环境：**
+- 已安装 protoc
+  - 版本：30.2
+  - 安装路径：`C:\Users\14690\Desktop\protoc-30.2-win64`
+  - 环境变量已配置
+
+**错误信息：**
+```bash
+error: failed to run custom build command for `protobuf-src v1.1.0+21.5`                       
+
+Caused by:
+  process didn't exit successfully: `C:\Users\14690\Desktop\rust-grpc\target\debug\build\protobuf-src-fde9bf0476095041\build-script-build` (exit code: 101)
