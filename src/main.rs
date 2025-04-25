@@ -1,25 +1,20 @@
-use {
-    clap::{Parser},
-    futures::{sink::SinkExt, stream::StreamExt},
-    log::info,
-    std::env,
-    std::{
-        collections::HashMap
-    },
-    tokio::time::{interval, Duration},
-    tonic::transport::channel::ClientTlsConfig,
-    yellowstone_grpc_client::GeyserGrpcClient,
-    yellowstone_grpc_proto::prelude::{
-        subscribe_update::UpdateOneof, CommitmentLevel, SubscribeRequest,
-        SubscribeRequestPing, SubscribeUpdatePong,SubscribeRequestFilterAccounts,
-        SubscribeUpdateSlot, SubscribeUpdateAccountInfo
-    },
-    serde_json::{json, Value},
-    solana_sdk::pubkey::Pubkey,
-    bs58,
-    hex,
+use clap::Parser;
+use futures::{sink::SinkExt, stream::StreamExt};
+use log::info;
+use std::env;
+use std::collections::HashMap;
+use tokio::time::{interval, Duration};
+use tonic::transport::channel::ClientTlsConfig;
+use yellowstone_grpc_client::GeyserGrpcClient;
+use yellowstone_grpc_proto::prelude::{
+    subscribe_update::UpdateOneof, CommitmentLevel, SubscribeRequest,
+    SubscribeRequestPing, SubscribeUpdatePong, SubscribeRequestFilterAccounts,
 };
-// Define a struct to parse command-line arguments using the `clap` crate.
+use solana_sdk::pubkey::Pubkey;
+mod market;
+mod pump;
+
+/// 命令行参数结构体
 #[derive(Debug, Clone, Parser)]
 #[clap(author, version, about)]
 struct Args {
@@ -27,25 +22,25 @@ struct Args {
     #[clap(short, long, default_value_t = String::from("https://solana-yellowstone-grpc.publicnode.com"))]
     endpoint: String,
 
-    // Optional x-token for authentication
+    /// 可选的 x_token
     #[clap(long)]
     x_token: Option<String>,
 }
 
-// Main asynchronous entry point of the application
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    // Set up environment variables and initialize the logger
+    // 设置日志环境变量
     env::set_var(
         env_logger::DEFAULT_FILTER_ENV,
         env::var_os(env_logger::DEFAULT_FILTER_ENV).unwrap_or_else(|| "info".into()),
     );
     env_logger::init();
+    log::info!("bot启动中");
 
-    // Parse command-line arguments
+    // 解析命令行参数
     let args = Args::parse();
 
-    // Build and connect the gRPC client
+    // 构建 Yellowstone gRPC 客户端
     let mut client = GeyserGrpcClient::build_from_shared(args.endpoint)?
         .x_token(args.x_token)?
         .tls_config(ClientTlsConfig::new().with_native_roots())?
@@ -53,26 +48,26 @@ async fn main() -> anyhow::Result<()> {
         .await?;
     let (mut subscribe_tx, mut stream) = client.subscribe().await?;
 
-    // Define a type alias for account filters
+    // 账户过滤器映射类型定义
     type AccountFilterMap = HashMap<String, SubscribeRequestFilterAccounts>;
     let mut accounts: AccountFilterMap = HashMap::new();
 
-    // Define account owners to filter
+    // 需要监听的账户 owner
     let pump = "pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA".to_string();
     let raydium = "675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8".to_string();
     accounts.insert(
         "client".to_string(),
         SubscribeRequestFilterAccounts {
             account: vec![],
-            owner: vec![pump.clone(), raydium],
+            owner: vec![pump.clone(), raydium.clone()],
             filters: vec![],
             nonempty_txn_signature: None,
         },
     );
 
-    // Run two asynchronous tasks concurrently
+    // 并发执行：发送订阅请求和处理消息流
     futures::try_join!(
-        // Task to send subscription requests and periodic pings
+        // 发送订阅请求和定时 ping
         async move {
             subscribe_tx
                 .send(SubscribeRequest {
@@ -87,6 +82,7 @@ async fn main() -> anyhow::Result<()> {
             loop {
                 timer.tick().await;
                 id += 1;
+                // 定时发送 ping 保持连接
                 subscribe_tx
                     .send(SubscribeRequest {
                         ping: Some(SubscribeRequestPing { id }),
@@ -97,13 +93,10 @@ async fn main() -> anyhow::Result<()> {
             #[allow(unreachable_code)]
             Ok::<(), anyhow::Error>(())
         },
-        // Task to process incoming messages from the stream
+        // 处理订阅消息流
         async move {
             while let Some(message) = stream.next().await {
                 match message?.update_oneof.expect("valid message") {
-                    UpdateOneof::Slot(SubscribeUpdateSlot { slot, .. }) => {
-                        info!("slot received: {slot}");
-                    }
                     UpdateOneof::Ping(_msg) => {
                         info!("ping received");
                     }
@@ -111,42 +104,18 @@ async fn main() -> anyhow::Result<()> {
                         info!("pong received: id#{id}");
                     }
                     UpdateOneof::Account(_msg) => {
+                        // 解析账户数据
                         let account = _msg.account.ok_or(anyhow::anyhow!("no account in the message"))?;
-                        info!("account received");
                         let ammkey = Pubkey::try_from(account.pubkey).map_err(|_| anyhow::anyhow!("invalid account pubkey"))?.to_string();
-                        info!("ammkey {}", ammkey);
                         let owner = Pubkey::try_from(account.owner).map_err(|_| anyhow::anyhow!("invalid account owner"))?.to_string();
-                        info!("owner {}", owner);
 
+                        let buffer = account.data.clone();  
+                        // 根据 owner 类型分别处理
                         if owner == pump {
-                            // Deserialize PumpLayout structure
-                            #[derive(Debug)]
-                            struct PumpLayout {
-                                discriminator: u64,
-                                pool_bump: u8,
-                                index: u16,
-                                creator: [u8; 32],
-                                base_mint: [u8; 32],
-                                quote_mint: [u8; 32],
-                                lp_mint: [u8; 32],
-                                base_vault: [u8; 32],
-                                quote_vault: [u8; 32],
-                            }
-                            
-                            let pump_data: PumpLayout = unsafe {
-                                std::ptr::read(account.data.as_ptr() as *const _)
-                            };
-                            
-                            info!("PumpLayout data:");
-                            info!("  discriminator: {}", pump_data.discriminator);
-                            info!("  pool_bump: {}", pump_data.pool_bump);
-                            info!("  index: {}", pump_data.index);
-                            info!("  creator: {}", bs58::encode(pump_data.creator).into_string());
-                            info!("  base_mint: {}", bs58::encode(pump_data.base_mint).into_string());
-                            info!("  quote_mint: {}", bs58::encode(pump_data.quote_mint).into_string());
-                            info!("  lp_mint: {}", bs58::encode(pump_data.lp_mint).into_string());
-                            info!("  base_vault: {}", bs58::encode(pump_data.base_vault).into_string());
-                            info!("  quote_vault: {}", bs58::encode(pump_data.quote_vault).into_string());
+                            market::pump(ammkey.clone(), buffer.clone())
+                        }
+                        if owner == raydium {
+                            market::raydium(ammkey, buffer)
                         }
                     }
                     msg => anyhow::bail!("received unexpected message: {msg:?}"),

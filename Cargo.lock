@@ -2107,6 +2107,7 @@ dependencies = [
  "maplit",
  "serde",
  "serde_json",
+ "solana-program",
  "solana-sdk",
  "solana-transaction-status",
  "tokio",
