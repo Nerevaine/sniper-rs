@@ -128,9 +128,7 @@ async fn main() -> anyhow::Result<()> {
                         if owner == raydium_cp {
                             info!("Processing raydium_cp market: {}", ammkey);
                             market::raydium_cp(ammkey, buffer)
-                        } else {
-                            info!("Unknown owner: {}", owner);
-                        }
+                        } 
                     }
                     msg => anyhow::bail!("received unexpected message: {msg:?}"),
                 }

@@ -38,7 +38,5 @@ export const RAYDIUM_CP_LAYOUT = struct([
 
 **问题描述：**
 
-用 Solscan 查询 9sfwAC6SmLSGghRnGEQib9Yqnf82hTh6PwPTi11v3mhT 这个 program id 下没有活跃账户
-
 
 
