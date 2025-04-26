@@ -32,6 +32,12 @@ export const RAYDIUM_CP_LAYOUT = struct([
 * 数据二 配置信息
 * 举例：https://solscan.io/account/BhH6HphjBKXu2PkUc2aw3xEMdUvK14NXxE5LbNWZNZAA#anchorData
 
+### 待解决问题
+
+**问题描述：**
+已获取长度为637字节的raydiumCp池子信息数据，但长度为4075字节的配置信息数据尚未获取到。需要实现配置信息数据的获取功能。
+
+
 
 ### 待解决问题
 

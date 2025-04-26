@@ -67,6 +67,7 @@ impl RaydiumCpLayout {
 pub fn print_raydium_cp_layout(ammkey: String, cp_data: &RaydiumCpLayout) {
     log::info!("\n==================== Raydium CP 数据 ====================");
     log::info!("AMM Address: {}", ammkey);
+    log::info!("Discriminator: {}", cp_data.discriminator);
     log::info!("Config ID: {}", cp_data.configId);
     log::info!("Pool Creator: {}", cp_data.poolCreator);
     log::info!("Vault A: {}", cp_data.vaultA);
@@ -74,6 +75,14 @@ pub fn print_raydium_cp_layout(ammkey: String, cp_data: &RaydiumCpLayout) {
     log::info!("LP Mint: {}", cp_data.lpMint);
     log::info!("Mint A: {}", cp_data.mintA);
     log::info!("Mint B: {}", cp_data.mintB);
+    log::info!("Token0 Program: {}", cp_data.token0Program);
+    log::info!("Token1 Program: {}", cp_data.token1Program); 
+    log::info!("Observation Key: {}", cp_data.observationKey);
+    log::info!("Auth Bump: {}", cp_data.authBump);
+    log::info!("Status: {}", cp_data.status);
+    log::info!("LP Mint Decimals: {}", cp_data.lpMintDecimals);
+    log::info!("Mint0 Decimals: {}", cp_data.mint0Decimals);
+    log::info!("Mint1 Decimals: {}", cp_data.mint1Decimals);
     log::info!("LP Supply: {}", cp_data.lpSupply);
     log::info!("Protocol Fees Mint A: {}", cp_data.protocolFeesMintA);
     log::info!("Protocol Fees Mint B: {}", cp_data.protocolFeesMintB);
