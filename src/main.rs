@@ -12,9 +12,14 @@ use yellowstone_grpc_proto::prelude::{
 };
 use solana_sdk::pubkey::Pubkey;
 mod market;
-mod pump;
-mod raydium;
-mod layout;
+mod common {
+    pub mod layout;
+}
+mod dex {
+    pub mod pump;
+    pub mod raydium;
+    pub mod raydiumCp;
+}
 
 /// 命令行参数结构体
 #[derive(Debug, Clone, Parser)]
@@ -31,7 +36,7 @@ struct Args {
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    // 设置日志环境变量
+    // 设置日志等级，初始化日志，然后输出一条“bot启动中”的日志，方便你在终端看到程序启动了
     env::set_var(
         env_logger::DEFAULT_FILTER_ENV,
         env::var_os(env_logger::DEFAULT_FILTER_ENV).unwrap_or_else(|| "info".into()),
@@ -116,6 +121,7 @@ async fn main() -> anyhow::Result<()> {
                         if owner == pump {
                             market::pump(ammkey.clone(), buffer.clone())
                         }
+
                         if owner == raydium {
                             market::raydium(ammkey, buffer)
                         }
