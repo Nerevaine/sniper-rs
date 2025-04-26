@@ -120,15 +120,11 @@ async fn main() -> anyhow::Result<()> {
 
                         let buffer = account.data.clone();  
                         // 根据 owner 类型分别处理
-                        // if owner == pump {
-                        //     market::pump(ammkey.clone(), buffer.clone())
-                        // }
-
-                        // if owner == raydium {
-                        //     market::raydium(ammkey, buffer)
-                        // }
-                        
-                        if owner == raydium_cp {
+                        if owner == pump {
+                            market::pump(ammkey.clone(), buffer.clone())
+                        } else if owner == raydium {
+                            market::raydium(ammkey.clone(), buffer.clone())
+                        } else if owner == raydium_cp {
                             market::raydium_cp(ammkey, buffer)
                         }
                     }
