@@ -62,11 +62,13 @@ async fn main() -> anyhow::Result<()> {
     // 需要监听的账户 owner
     let pump = "pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA".to_string();
     let raydium = "675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8".to_string();
+    let raydium_cp = "9sfwAC6SmLSGghRnGEQib9Yqnf82hTh6PwPTi11v3mhT".to_string();
+    
     accounts.insert(
         "client".to_string(),
         SubscribeRequestFilterAccounts {
             account: vec![],
-            owner: vec![pump.clone(), raydium.clone()],
+            owner: vec![pump.clone(), raydium.clone(), raydium_cp.clone()],
             filters: vec![],
             nonempty_txn_signature: None,
         },
@@ -118,12 +120,16 @@ async fn main() -> anyhow::Result<()> {
 
                         let buffer = account.data.clone();  
                         // 根据 owner 类型分别处理
-                        if owner == pump {
-                            market::pump(ammkey.clone(), buffer.clone())
-                        }
+                        // if owner == pump {
+                        //     market::pump(ammkey.clone(), buffer.clone())
+                        // }
 
-                        if owner == raydium {
-                            market::raydium(ammkey, buffer)
+                        // if owner == raydium {
+                        //     market::raydium(ammkey, buffer)
+                        // }
+                        
+                        if owner == raydium_cp {
+                            market::raydium_cp(ammkey, buffer)
                         }
                     }
                     msg => anyhow::bail!("received unexpected message: {msg:?}"),

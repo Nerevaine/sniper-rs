@@ -1,20 +1,32 @@
 use log;
 use solana_program::pubkey::Pubkey;
-use crate::common::layout::{read_pubkey, read_u64};
+use crate::common::layout::{read_pubkey, read_u64, read_u8};
 
 #[allow(non_snake_case)]
 #[derive(Debug, Clone)]
 #[allow(dead_code)]
 pub struct RaydiumCpLayout {
-    pub baseVault: Pubkey,        // 基础币种金库地址
-    pub quoteVault: Pubkey,       // 报价币种金库地址
-    pub baseMint: Pubkey,         // 基础币种铸币地址
-    pub quoteMint: Pubkey,        // 报价币种铸币地址
-    pub lpMint: Pubkey,           // LP 代币铸币地址
-    pub baseReserve: u64,         // 基础币种储备量
-    pub quoteReserve: u64,        // 报价币种储备量
-    pub lpSupply: u64,            // LP 代币总供应量
-    pub startTime: u64,           // 池子启动时间
+    pub discriminator: u64,       // Layout discriminator
+    pub configId: Pubkey,        // Configuration ID
+    pub poolCreator: Pubkey,     // Pool creator address
+    pub vaultA: Pubkey,          // Vault A address
+    pub vaultB: Pubkey,          // Vault B address
+    pub lpMint: Pubkey,          // LP token mint address
+    pub mintA: Pubkey,           // Token A mint address
+    pub mintB: Pubkey,           // Token B mint address
+    pub token0Program: Pubkey,   // Token program for token0
+    pub token1Program: Pubkey,   // Token program for token1
+    pub observationKey: Pubkey,  // Observation key
+    pub authBump: u8,            // Authority bump
+    pub status: u8,              // Pool status
+    pub lpMintDecimals: u8,      // LP token decimals
+    pub mint0Decimals: u8,       // Token0 decimals
+    pub mint1Decimals: u8,       // Token1 decimals
+    pub lpSupply: u64,           // LP token supply
+    pub protocolFeesMintA: u64,  // Protocol fees for token A
+    pub protocolFeesMintB: u64,  // Protocol fees for token B
+    pub fundFeesMintA: u64,      // Fund fees for token A
+    pub fundFeesMintB: u64,      // Fund fees for token B
 }
 
 impl RaydiumCpLayout {
@@ -24,19 +36,30 @@ impl RaydiumCpLayout {
             return None;
         }
 
-        // 从 Raydium CP 账户数据的第 8 字节开始，依次解析各个字段
         let mut offset = 8;
         
         Some(Self {
-            baseVault: read_pubkey(data, &mut offset),        // 基础币种金库地址
-            quoteVault: read_pubkey(data, &mut offset),       // 报价币种金库地址
-            baseMint: read_pubkey(data, &mut offset),         // 基础币种铸币地址
-            quoteMint: read_pubkey(data, &mut offset),        // 报价币种铸币地址
-            lpMint: read_pubkey(data, &mut offset),           // LP 代币铸币地址
-            baseReserve: read_u64(data, &mut offset),         // 基础币种储备量
-            quoteReserve: read_u64(data, &mut offset),        // 报价币种储备量
-            lpSupply: read_u64(data, &mut offset),            // LP 代币总供应量
-            startTime: read_u64(data, &mut offset),           // 池子启动时间
+            discriminator: read_u64(data, &mut offset),
+            configId: read_pubkey(data, &mut offset),
+            poolCreator: read_pubkey(data, &mut offset),
+            vaultA: read_pubkey(data, &mut offset),
+            vaultB: read_pubkey(data, &mut offset),
+            lpMint: read_pubkey(data, &mut offset),
+            mintA: read_pubkey(data, &mut offset),
+            mintB: read_pubkey(data, &mut offset),
+            token0Program: read_pubkey(data, &mut offset),
+            token1Program: read_pubkey(data, &mut offset),
+            observationKey: read_pubkey(data, &mut offset),
+            authBump: read_u8(data, &mut offset),
+            status: read_u8(data, &mut offset),
+            lpMintDecimals: read_u8(data, &mut offset),
+            mint0Decimals: read_u8(data, &mut offset),
+            mint1Decimals: read_u8(data, &mut offset),
+            lpSupply: read_u64(data, &mut offset),
+            protocolFeesMintA: read_u64(data, &mut offset),
+            protocolFeesMintB: read_u64(data, &mut offset),
+            fundFeesMintA: read_u64(data, &mut offset),
+            fundFeesMintB: read_u64(data, &mut offset),
         })
     }
 }
@@ -44,14 +67,17 @@ impl RaydiumCpLayout {
 pub fn print_raydium_cp_layout(ammkey: String, cp_data: &RaydiumCpLayout) {
     log::info!("\n==================== Raydium CP 数据 ====================");
     log::info!("AMM Address: {}", ammkey);
-    log::info!("Base Token Vault: {}", cp_data.baseVault);
-    log::info!("Quote Token Vault: {}", cp_data.quoteVault);
-    log::info!("Base Token Mint: {}", cp_data.baseMint);
-    log::info!("Quote Token Mint: {}", cp_data.quoteMint);
-    log::info!("LP Token Mint: {}", cp_data.lpMint);
-    log::info!("Base Reserve: {}", cp_data.baseReserve);
-    log::info!("Quote Reserve: {}", cp_data.quoteReserve);
+    log::info!("Config ID: {}", cp_data.configId);
+    log::info!("Pool Creator: {}", cp_data.poolCreator);
+    log::info!("Vault A: {}", cp_data.vaultA);
+    log::info!("Vault B: {}", cp_data.vaultB);
+    log::info!("LP Mint: {}", cp_data.lpMint);
+    log::info!("Mint A: {}", cp_data.mintA);
+    log::info!("Mint B: {}", cp_data.mintB);
     log::info!("LP Supply: {}", cp_data.lpSupply);
-    log::info!("Start Time: {}", cp_data.startTime);
+    log::info!("Protocol Fees Mint A: {}", cp_data.protocolFeesMintA);
+    log::info!("Protocol Fees Mint B: {}", cp_data.protocolFeesMintB);
+    log::info!("Fund Fees Mint A: {}", cp_data.fundFeesMintA);
+    log::info!("Fund Fees Mint B: {}", cp_data.fundFeesMintB);
     log::info!("======================================================\n");
 }
