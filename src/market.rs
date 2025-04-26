@@ -45,7 +45,7 @@ pub fn raydium(pubkey: String, buffer:Vec<u8>){
 
 /// 处理 Raydium Concentrated Pool 类型账户数据，仅打印信息
 pub fn raydium_cp(pubkey: String, buffer: Vec<u8>) {
-    if buffer.len() == 336 {
+    if buffer.len() == 637 {
         match RaydiumCpLayout::try_from_slice_manual(buffer.as_slice()) {
             Some(cp_data) => print_raydium_cp_layout(pubkey, &cp_data),
             None => log::error!("无法解析 Raydium CP 数据"),
