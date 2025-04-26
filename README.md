@@ -33,12 +33,12 @@ export const RAYDIUM_CP_LAYOUT = struct([
 * 举例：https://solscan.io/account/BhH6HphjBKXu2PkUc2aw3xEMdUvK14NXxE5LbNWZNZAA#anchorData
 
 
-### 已解决问题
+### 待解决问题
 
-#### 1. 项目依赖编译问题
 
 **问题描述：**
-项目依赖 `protobuf-src v1.1.0+21.5` 在 Windows 环境下编译失败，具体错误为路径不安全。
 
-**问题回答：**
-在ubuntu环境下开发
+用 Solscan 查询 9sfwAC6SmLSGghRnGEQib9Yqnf82hTh6PwPTi11v3mhT 这个 program id 下没有活跃账户
+
+
+
