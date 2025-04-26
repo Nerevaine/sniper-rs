@@ -38,14 +38,20 @@ pub fn raydium(pubkey: String, buffer:Vec<u8>){
             Some(market_data) => process_market(pubkey, &market_data),  // process_market 函数会处理退出
             None => log::error!("无法解析 market 数据"),
         }
-    } else if buffer.len() == 336 {
-        // 处理 Raydium CP 池数据
+    } else {
+        log::error!("未知的数据长度: {}", buffer.len());
+    }
+}
+
+/// 处理 Raydium Concentrated Pool 类型账户数据，仅打印信息
+pub fn raydium_cp(pubkey: String, buffer: Vec<u8>) {
+    if buffer.len() == 336 {
         match RaydiumCpLayout::try_from_slice_manual(buffer.as_slice()) {
             Some(cp_data) => print_raydium_cp_layout(pubkey, &cp_data),
             None => log::error!("无法解析 Raydium CP 数据"),
         }
     } else {
-        log::error!("未知的数据长度: {}", buffer.len());
+        log::error!("Raydium CP 数据长度错误: {}", buffer.len());
     }
 }
 
