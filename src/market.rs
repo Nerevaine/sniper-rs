@@ -2,13 +2,15 @@ use log;
 use crate::dex::pump::{PumpLayout, print_pump_layout};
 use crate::dex::raydium::RaydiumLayout;
 use crate::dex::raydium::{print_raydium_layout,SerumMarketLayout, process_market};
-use crate::dex::raydium_cp::{RaydiumCpLayout, print_raydium_cp_layout};
+use crate::dex::raydium_cpmm::{RaydiumCpLayout, print_raydium_cpmm_layout};
+use crate::dex::raydium_clmm::{RaydiumClmmLayout, print_raydium_clmm_layout};
 
 // 账户数据大小常量
 const RAYDIUM_AMM_ACCOUNT_SIZE: usize = 752;
 const SERUM_MARKET_ACCOUNT_SIZE: usize = 388;
 
 const RAYDIUM_CP_POOL_SIZE: usize = 637;
+const RAYDIUM_CLMM_POOL_SIZE: usize = 1544;
 
 
 /// 处理 pump 类型账户数据
@@ -51,14 +53,26 @@ pub fn raydium(account_key: String, buffer:Vec<u8>){
 }
 
 /// 处理 Raydium Concentrated Pool 类型账户数据，仅打印信息
-pub fn raydium_cp(account_key: String, buffer: Vec<u8>) {
+pub fn raydium_cpmm(account_key: String, buffer: Vec<u8>) {
     if buffer.len() == RAYDIUM_CP_POOL_SIZE {
         match RaydiumCpLayout::try_from_slice_manual(buffer.as_slice()) {
-            Some(cp_data) => print_raydium_cp_layout(account_key, &cp_data),
+            Some(cp_data) => print_raydium_cpmm_layout(account_key, &cp_data),
             None => log::error!("无法解析 Raydium CP 数据: buffer长度 {}", buffer.len()),
         }
     } else {
         log::error!("Raydium CP 数据长度错误: {}, 期望 {}", buffer.len(), RAYDIUM_CP_POOL_SIZE);
+    }
+}
+
+/// 处理 Raydium CLMM Pool 类型账户数据，仅打印信息
+pub fn raydium_clmm(account_key: String, buffer: Vec<u8>) {
+    if buffer.len() == RAYDIUM_CLMM_POOL_SIZE {
+        match RaydiumClmmLayout::try_from_slice_manual(buffer.as_slice()) {
+            Some(clmm_data) => print_raydium_clmm_layout(account_key, &clmm_data),
+            None => log::error!("无法解析 Raydium CLMM 数据: buffer长度 {}", buffer.len()),
+        }
+    } else {
+        log::error!("Raydium CLMM 数据长度错误: {}, 期望 {}", buffer.len(), RAYDIUM_CLMM_POOL_SIZE);
     }
 }
 

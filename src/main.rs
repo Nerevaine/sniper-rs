@@ -18,8 +18,8 @@ mod common {
 mod dex {
     pub mod pump;
     pub mod raydium;
-    pub mod raydium_cp;
-
+    pub mod raydium_cpmm;
+    pub mod raydium_clmm;
 }
 
 /// 命令行参数结构体
@@ -63,13 +63,14 @@ async fn main() -> anyhow::Result<()> {
     // 需要监听的账户 owner
     let pump = "pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA".to_string();
     let raydium = "675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8".to_string();
-    let raydium_cp = "CPMMoo8L3F4NbTegBCKVNunggL7H1ZpdTHKxQB5qKP1C".to_string();
+    let raydium_cpmm = "CPMMoo8L3F4NbTegBCKVNunggL7H1ZpdTHKxQB5qKP1C".to_string();
+    let raydium_clmm = "CAMMCzo5YL8w4VFF8KVHrK22GGUsp5VTaW7grrKgrWqK".to_string();
     
     accounts.insert(
         "client".to_string(),
         SubscribeRequestFilterAccounts {
             account: vec![],
-            owner: vec![pump.clone(), raydium.clone(), raydium_cp.clone()],
+            owner: vec![pump.clone(), raydium.clone(), raydium_cpmm.clone(), raydium_clmm.clone()],
             filters: vec![],
             nonempty_txn_signature: None,
         },
@@ -127,8 +128,10 @@ async fn main() -> anyhow::Result<()> {
                         // if owner == raydium {
                         //     market::raydium(ammkey.clone(), buffer.clone())
                         // }  
-                        if owner == raydium_cp {
-                                market::raydium_cp(ammkey, buffer)
+                        if owner == raydium_cpmm {
+                                market::raydium_cpmm(ammkey.clone(), buffer.clone())
+                        } else if owner == raydium_clmm {
+                                market::raydium_clmm(ammkey, buffer)
                         } 
                     }
                     msg => anyhow::bail!("received unexpected message: {msg:?}"),

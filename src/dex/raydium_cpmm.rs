@@ -66,7 +66,7 @@ impl RaydiumCpLayout {
     }
 }
 
-pub fn print_raydium_cp_layout(ammkey: String, cp_data: &RaydiumCpLayout) {
+pub fn print_raydium_cpmm_layout(ammkey: String, cp_data: &RaydiumCpLayout) {
     log::info!("==================== Raydium CP Data ====================");
     log::info!("AMM Address: {}", ammkey);
     log::info!("AMM Config: {}", cp_data.ammConfig);
