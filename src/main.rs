@@ -128,9 +128,10 @@ async fn main() -> anyhow::Result<()> {
                         // if owner == raydium {
                         //     market::raydium(ammkey.clone(), buffer.clone())
                         // }  
-                        if owner == raydium_cpmm {
-                                market::raydium_cpmm(ammkey.clone(), buffer.clone())
-                        } else if owner == raydium_clmm {
+                        // if owner == raydium_cpmm {
+                        //         market::raydium_cpmm(ammkey.clone(), buffer.clone())
+                        // } 
+                        if owner == raydium_clmm {
                                 market::raydium_clmm(ammkey, buffer)
                         } 
                     }
