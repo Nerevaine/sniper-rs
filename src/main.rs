@@ -18,7 +18,8 @@ mod common {
 mod dex {
     pub mod pump;
     pub mod raydium;
-    pub mod raydiumCp;
+    pub mod raydium_cp;
+
 }
 
 /// 命令行参数结构体
@@ -120,11 +121,11 @@ async fn main() -> anyhow::Result<()> {
 
                         let buffer = account.data.clone();  
                         // 根据 owner 类型分别处理
-                        // if owner == pump {
-                        //     market::pump(ammkey.clone(), buffer.clone())
-                        // } else if owner == raydium {
-                        //     market::raydium(ammkey.clone(), buffer.clone())
-                        // } else 
+                        if owner == pump {
+                            market::pump(ammkey.clone(), buffer.clone())
+                        } else if owner == raydium {
+                            market::raydium(ammkey.clone(), buffer.clone())
+                        } else 
                         if owner == raydium_cp {
                             info!("Processing raydium_cp market: {}", ammkey);
                             market::raydium_cp(ammkey, buffer)
