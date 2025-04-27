@@ -7,7 +7,7 @@ use crate::dex::raydium_cp::{RaydiumCpLayout, print_raydium_cp_layout};
 // 账户数据大小常量
 const RAYDIUM_AMM_ACCOUNT_SIZE: usize = 752;
 const SERUM_MARKET_ACCOUNT_SIZE: usize = 388;
-const RAYDIUM_CP_CONFIG_SIZE: usize = 4075;
+
 const RAYDIUM_CP_POOL_SIZE: usize = 637;
 
 
@@ -52,13 +52,13 @@ pub fn raydium(account_key: String, buffer:Vec<u8>){
 
 /// 处理 Raydium Concentrated Pool 类型账户数据，仅打印信息
 pub fn raydium_cp(account_key: String, buffer: Vec<u8>) {
-    if buffer.len() == RAYDIUM_CP_CONFIG_SIZE || buffer.len() == RAYDIUM_CP_POOL_SIZE {
+    if buffer.len() == RAYDIUM_CP_POOL_SIZE {
         match RaydiumCpLayout::try_from_slice_manual(buffer.as_slice()) {
             Some(cp_data) => print_raydium_cp_layout(account_key, &cp_data),
             None => log::error!("无法解析 Raydium CP 数据: buffer长度 {}", buffer.len()),
         }
     } else {
-        log::error!("Raydium CP 数据长度错误: {}, 期望 {} 或 {}", buffer.len(), RAYDIUM_CP_CONFIG_SIZE, RAYDIUM_CP_POOL_SIZE);
+        log::error!("Raydium CP 数据长度错误: {}, 期望 {}", buffer.len(), RAYDIUM_CP_POOL_SIZE);
     }
 }
 

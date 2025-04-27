@@ -102,26 +102,21 @@ impl SerumMarketLayout {
 }
 
 pub fn process_market(pubkey: String, market_data: &SerumMarketLayout) {
-    log::info!("处理市场数据: {}", pubkey);
-    log::info!("{:?}", market_data);
-    // 打印市场详细信息
-    log::info!("\n==================== 市场数据 ====================");
-    log::info!("市场地址: {}", pubkey);
-    log::info!("市场标志: {}", market_data.market_flags);
-    log::info!("自身地址: {}", market_data.own_address);
-    log::info!("签名者随机数: {}", market_data.vault_signer_nonce);
-    log::info!("基础代币铸币地址: {}", market_data.base_mint);
-    log::info!("报价代币铸币地址: {}", market_data.quote_mint);
-    log::info!("基础代币金库: {}", market_data.base_vault);
-    log::info!("报价代币金库: {}", market_data.quote_vault);
-    log::info!("请求队列: {}", market_data.request_queue);
-    log::info!("事件队列: {}", market_data.event_queue);
-    log::info!("买单簿: {}", market_data.bids);
-    log::info!("卖单簿: {}", market_data.asks);
-    log::info!("基础代币最小交易量: {}", market_data.base_lot_size);
-    log::info!("报价代币最小交易量: {}", market_data.quote_lot_size);
-    log::info!("================================================\n");
-
-    // 退出程序
+    log::info!("\n==================== Serum Market Data ====================");
+    log::info!("Market Address: {}", pubkey);
+    log::info!("Market Flags: {}", market_data.market_flags);
+    log::info!("Own Address: {}", market_data.own_address);
+    log::info!("Vault Signer Nonce: {}", market_data.vault_signer_nonce);
+    log::info!("Base Token Mint: {}", market_data.base_mint);
+    log::info!("Quote Token Mint: {}", market_data.quote_mint);
+    log::info!("Base Token Vault: {}", market_data.base_vault);
+    log::info!("Quote Token Vault: {}", market_data.quote_vault);
+    log::info!("Request Queue: {}", market_data.request_queue);
+    log::info!("Event Queue: {}", market_data.event_queue);
+    log::info!("Bids: {}", market_data.bids);
+    log::info!("Asks: {}", market_data.asks);
+    log::info!("Base Lot Size: {}", market_data.base_lot_size);
+    log::info!("Quote Lot Size: {}", market_data.quote_lot_size);
+    log::info!("==========================================================\n");
     std::process::exit(0);
 }

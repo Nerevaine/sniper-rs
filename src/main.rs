@@ -120,15 +120,15 @@ async fn main() -> anyhow::Result<()> {
                         let owner = Pubkey::try_from(account.owner).map_err(|_| anyhow::anyhow!("invalid account owner"))?.to_string();
 
                         let buffer = account.data.clone();  
-                        // // 根据 owner 类型分别处理
+                        // 根据 owner 类型分别处理
                         // if owner == pump {
                         //     market::pump(ammkey.clone(), buffer.clone())
-                        // } else if owner == raydium {
+                        // } 
+                        // if owner == raydium {
                         //     market::raydium(ammkey.clone(), buffer.clone())
-                        // } else 
+                        // }  
                         if owner == raydium_cp {
-                            info!("Processing raydium_cp market: {}", ammkey);
-                            market::raydium_cp(ammkey, buffer)
+                                market::raydium_cp(ammkey, buffer)
                         } 
                     }
                     msg => anyhow::bail!("received unexpected message: {msg:?}"),
