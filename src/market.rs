@@ -1,7 +1,7 @@
 use log;
 use crate::dex::pump::{PumpLayout, print_pump_layout};
 use crate::dex::raydium::RaydiumLayout;
-use crate::dex::raydium::{print_raydium_layout, Serum_MarketLayout, process_market};
+use crate::dex::raydium::{print_raydium_layout,SerumMarketLayout, process_market};
 use crate::dex::raydium_cp::{RaydiumCpLayout, print_raydium_cp_layout};
 
 // 账户数据大小常量
@@ -41,7 +41,7 @@ pub fn raydium(account_key: String, buffer:Vec<u8>){
         }
     } else if buffer.len() == SERUM_MARKET_ACCOUNT_SIZE {
         // 处理 serum 市场账户数据
-        match Serum_MarketLayout::slice_market(buffer.as_slice()) {
+        match SerumMarketLayout::slice_market(buffer.as_slice()) {
             Some(market_data) => process_market(account_key, &market_data),
             None => log::error!("无法解析 market 数据: buffer长度 {}", buffer.len()),
         }
