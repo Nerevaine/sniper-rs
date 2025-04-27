@@ -59,7 +59,7 @@ pub fn print_raydium_layout(ammkey: String, raydium_data: &RaydiumLayout) {
 
 #[derive(Debug)]
 #[allow(dead_code)]  // Add this line to suppress the warning
-pub struct MarketLayout {
+pub struct Serum_MarketLayout {
     pub market_flags: u64,
     pub own_address: Pubkey,
     pub vault_signer_nonce: u64,
@@ -75,10 +75,10 @@ pub struct MarketLayout {
     pub quote_lot_size: u64,
 }
 
-impl MarketLayout {
+impl Serum_MarketLayout {
     pub fn slice_market(data: &[u8]) -> Option<Self> {
         if data.len() < 388 { // 388是Serum市场账户的典型长度
-            log::error!("数据长度不足，无法解析 MarketLayout");
+            log::error!("数据长度不足，无法解析 Serum_MarketLayout");
             return None;
         }
         let mut offset = 0;
@@ -101,7 +101,7 @@ impl MarketLayout {
     }
 }
 
-pub fn process_market(pubkey: String, market_data: &MarketLayout) {
+pub fn process_market(pubkey: String, market_data: &Serum_MarketLayout) {
     log::info!("处理市场数据: {}", pubkey);
     log::info!("{:?}", market_data);
     // 打印市场详细信息
