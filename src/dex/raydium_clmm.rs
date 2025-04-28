@@ -81,7 +81,7 @@ impl RaydiumClmmLayout {
 }
 
 pub fn print_raydium_clmm_layout(account_key: String, data: &RaydiumClmmLayout) {
-    log::info!("==================== Raydium CLMM Data ====================");
+    log::info!("\n==================== Raydium CLMM 数据 ====================");
     log::info!("Pool Address: {}", account_key);
     log::info!("AMM Config: {}", data.amm_config);
     log::info!("Owner: {}", data.owner);

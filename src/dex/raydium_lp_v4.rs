@@ -6,7 +6,7 @@ use crate::common::layout::{read_pubkey, read_u64};
 #[allow(non_snake_case)]
 #[derive(Debug, Clone)]
 #[allow(dead_code)]
-pub struct RaydiumLayout {
+pub struct RaydiumLpV4Layout {
     pub baseVault: Pubkey,        // 基础币种金库地址
     pub quoteVault: Pubkey,       // 报价币种金库地址
     pub baseMint: Pubkey,         // 基础币种铸币地址
@@ -18,10 +18,10 @@ pub struct RaydiumLayout {
     pub targetOrders: Pubkey,     // target orders 账户地址
 }
 
-impl RaydiumLayout {
+impl RaydiumLpV4Layout {
     pub fn try_from_slice_manual(data: &[u8]) -> Option<Self> {
         if data.len() < 752 {
-            log::error!("数据长度不足，无法解析 RaydiumLayout");
+            log::error!("数据长度不足，无法解析 RaydiumLpV4Layout");
             return None;
         }
 
@@ -42,8 +42,8 @@ impl RaydiumLayout {
     }
 }
 
-pub fn print_raydium_layout(ammkey: String, raydium_data: &RaydiumLayout) {
-    log::info!("\n==================== Raydium AMM 数据 ====================");
+pub fn print_raydium_lp_v4_layout(ammkey: String, raydium_data: &RaydiumLpV4Layout) {
+    log::info!("\n==================== Raydium LP V4 数据 ====================");
     log::info!("AMM Address: {}", ammkey);
     log::info!("Base Token Vault: {}", raydium_data.baseVault);
     log::info!("Quote Token Vault: {}", raydium_data.quoteVault);
