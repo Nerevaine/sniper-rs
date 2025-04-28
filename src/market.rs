@@ -26,7 +26,7 @@ pub fn pump(account_key: String, buffer: Vec<u8>) {
 
     // 尝试解析 buffer 为 PumpLayout 结构体
     match PumpLayout::try_from_slice_manual(buffer.as_slice()) {
-        Some(pump_data) => print_pump_layout(&pump_data),
+        Some(pump_data) => print_pump_layout(account_key, &pump_data),
         None => log::error!("无法解析 pump 数据: buffer长度 {}", buffer.len()),
     }
 }

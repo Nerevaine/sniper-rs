@@ -102,7 +102,7 @@ impl RaydiumClmmLayout {
 
 pub fn print_raydium_clmm_layout(account_key: String, data: &RaydiumClmmLayout) {
     log::info!("\n==================== Raydium CLMM 数据 ====================");
-    log::info!("Pool Address: {}", account_key);
+    log::info!("Pool Address: (https://solscan.io/account/{}#anchorData)", account_key);
     log::info!("AMM Config: {}", data.amm_config);
     log::info!("Owner: {}", data.owner);
     log::info!("Token0 Mint: {}", data.token_mint0);

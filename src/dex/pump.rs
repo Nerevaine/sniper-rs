@@ -68,17 +68,20 @@ impl PumpLayout {
     }
 }
 
-/// 打印 PumpLayout 结构体中的所有字段信息
+/// 打印 PumpLayout 账户数据的详细信息
+/// @param account_key - 账户地址字符串
 /// @param pump_data - PumpLayout 结构体引用
-pub fn print_pump_layout(pump_data: &PumpLayout) {
-    log::info!("PumpLayout data:");
-    log::info!("  discriminator: {}", pump_data.discriminator);
-    log::info!("  pool_bump: {}", pump_data.pool_bump);
-    log::info!("  index: {}", pump_data.index);
-    log::info!("  creator: {}", pump_data.creator);
-    log::info!("  base_mint: {}", pump_data.base_mint);
-    log::info!("  quote_mint: {}", pump_data.quote_mint);
-    log::info!("  lp_mint: {}", pump_data.lp_mint);
-    log::info!("  base_vault: {}", pump_data.base_vault);
-    log::info!("  quote_vault: {}", pump_data.quote_vault);
+pub fn print_pump_layout(account_key: String, pump_data: &PumpLayout) {
+    log::info!("\n==================== Pump 数据 ====================");
+    log::info!("Pool Address: (https://solscan.io/account/{}#anchorData)", account_key);
+    log::info!("Discriminator: {}", pump_data.discriminator);
+    log::info!("Pool Bump: {}", pump_data.pool_bump);
+    log::info!("Index: {}", pump_data.index);
+    log::info!("Creator: {}", pump_data.creator);
+    log::info!("Base Mint: {}", pump_data.base_mint);
+    log::info!("Quote Mint: {}", pump_data.quote_mint);
+    log::info!("LP Mint: {}", pump_data.lp_mint);
+    log::info!("Base Vault: {}", pump_data.base_vault);
+    log::info!("Quote Vault: {}", pump_data.quote_vault);
+    log::info!("================================================\n");
 }

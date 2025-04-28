@@ -44,7 +44,7 @@ impl RaydiumLpV4Layout {
 
 pub fn print_raydium_lp_v4_layout(ammkey: String, raydium_data: &RaydiumLpV4Layout) {
     log::info!("\n==================== Raydium LP V4 数据 ====================");
-    log::info!("AMM Address: {}", ammkey);
+    log::info!("AMM Address: (https://solscan.io/account/{}#anchorData)", ammkey);
     log::info!("Base Token Vault: {}", raydium_data.baseVault);
     log::info!("Quote Token Vault: {}", raydium_data.quoteVault);
     log::info!("Base Token Mint: {}", raydium_data.baseMint);
