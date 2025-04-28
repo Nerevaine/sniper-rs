@@ -5,7 +5,7 @@ use crate::dex::raydium_cpmm::{RaydiumCpLayout, print_raydium_cpmm_layout};
 use crate::dex::raydium_clmm::{RaydiumClmmLayout, print_raydium_clmm_layout};
 
 // 账户数据大小常量
-const RAYDIUM_AMM_ACCOUNT_SIZE: usize = 752;
+const RAYDIUM_LP_V4_ACCOUNT_SIZE: usize = 752;
 const SERUM_MARKET_ACCOUNT_SIZE: usize = 388;
 
 const RAYDIUM_CP_POOL_SIZE: usize = 637;
@@ -35,7 +35,7 @@ pub fn pump(account_key: String, buffer: Vec<u8>) {
 /// - ammkey: 账户公钥字符串
 /// - buffer: 账户原始数据字节
 pub fn raydium_lp_v4(account_key: String, buffer: Vec<u8>) {
-    if buffer.len() == RAYDIUM_AMM_ACCOUNT_SIZE {
+    if buffer.len() == RAYDIUM_LP_V4_ACCOUNT_SIZE {
         match RaydiumLpV4Layout::try_from_slice_manual(buffer.as_slice()) {
             Some(raydium_data) => print_raydium_lp_v4_layout(account_key, &raydium_data),
             None => log::error!("无法解析 raydium 数据: buffer长度 {}", buffer.len()),
@@ -47,7 +47,7 @@ pub fn raydium_lp_v4(account_key: String, buffer: Vec<u8>) {
             None => log::error!("无法解析 market 数据: buffer长度 {}", buffer.len()),
         }
     } else {
-        log::error!("未知的数据长度: {}, 期望 {} 或 {}", buffer.len(), RAYDIUM_AMM_ACCOUNT_SIZE, SERUM_MARKET_ACCOUNT_SIZE);
+        log::error!("未知的数据长度: {}, 期望 {} 或 {}", buffer.len(), RAYDIUM_LP_V4_ACCOUNT_SIZE, SERUM_MARKET_ACCOUNT_SIZE);
     }
 }
 
