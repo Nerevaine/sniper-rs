@@ -77,7 +77,7 @@ impl MeteoraLayout {
             return None;
         }
 
-        let mut offset = 0;
+        let mut offset = 8; // 跳过 8 字节 discriminator
 
         // 读取 StaticParameters
         let parameters = StaticParameters {
@@ -93,17 +93,22 @@ impl MeteoraLayout {
             base_fee_power_factor: read_u8(data, &mut offset),
         };
 
-        offset += 5; // 跳过padding
+        // offset += 1; // 移除这行：跳过padding (调整为 1 字节对齐) - 这里不需要跳过
 
         // 读取 VariableParameters
         let v_parameters = VariableParameters {
             volatility_accumulator: read_u32(data, &mut offset),
             volatility_reference: read_u32(data, &mut offset),
             index_reference: read_i32(data, &mut offset),
-            last_update_timestamp: read_i64(data, &mut offset), // 跳过4字节padding
+            // 添加这行：跳过 VariableParameters 结构体内部的 4 字节 padding
+            // offset += 4; // 跳过 padding [u8; 4]
+            last_update_timestamp: read_i64(data, &mut offset), 
         };
+        
+        // 移除这行：跳过 VariableParameters 结构体内部的 4 字节 padding
+        offset += 4; // 跳过 padding [u8; 4]
 
-        offset += 8; // 跳过padding1
+        offset += 8; // 跳过 padding1 [u8; 8]
 
         // 读取基本字段
         let mut bump_seed = [0u8; 1];
