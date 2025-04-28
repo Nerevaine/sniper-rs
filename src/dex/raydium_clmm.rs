@@ -29,11 +29,17 @@ pub struct RaydiumClmmLayout {
 impl RaydiumClmmLayout {
     pub fn try_from_slice_manual(data: &[u8]) -> Option<Self> {
         if data.len() != RAYDIUM_CLMM_POOL_SIZE {
+            log::error!("数据长度不匹配: 期望 {}, 实际 {}", RAYDIUM_CLMM_POOL_SIZE, data.len());
             return None;
         }
+
         let mut offset = 0;
+        
+        // 1. 读取基础字段
         let mut bump = [0u8; 1];
         bump[0] = read_u8(data, &mut offset);
+        
+        // 2. 读取所有 Pubkey 字段
         let amm_config = read_pubkey(data, &mut offset);
         let owner = read_pubkey(data, &mut offset);
         let token_mint0 = read_pubkey(data, &mut offset);
@@ -41,23 +47,37 @@ impl RaydiumClmmLayout {
         let token_vault0 = read_pubkey(data, &mut offset);
         let token_vault1 = read_pubkey(data, &mut offset);
         let observation_key = read_pubkey(data, &mut offset);
+
+        // 3. 读取小数位和tick间距
         let mint_decimals0 = read_u8(data, &mut offset);
         let mint_decimals1 = read_u8(data, &mut offset);
         let tick_spacing = read_u16(data, &mut offset);
+
+        // 4. 读取流动性和价格
         let liquidity = read_u128(data, &mut offset);
         let sqrt_price_x64 = read_u128(data, &mut offset);
-        let mut tick_bytes = [0u8; 4];
-        tick_bytes.copy_from_slice(&data[offset..offset + 4]);
+
+        // 5. 读取当前tick
+        let tick_current = i32::from_le_bytes(data[offset..offset + 4].try_into().unwrap());
         offset += 4;
-        let tick_current = i32::from_le_bytes(tick_bytes);
-        offset += 4; // 跳过padding3和padding4
-        let _ = read_u16(data, &mut offset);
-        let _ = read_u16(data, &mut offset);
-        offset += 16 * 2; // 跳过fee_growth_global0_x64和fee_growth_global1_x64
+
+        // 6. 跳过padding3和padding4 (2个u16)
+        offset += 4;
+
+        // 7. 跳过fee_growth_global字段 (2个u128)
+        offset += 32;
+
+        // 8. 读取protocol fees
         let protocol_fees_token0 = read_u64(data, &mut offset);
         let protocol_fees_token1 = read_u64(data, &mut offset);
-        offset += 16 * 4; // 跳过swap_in_amount_token0, swap_out_amount_token1, swap_in_amount_token1, swap_out_amount_token0
+
+        // 9. 跳过swap amounts (4个u128)
+        offset += 64;
+
+        // 10. 读取status
         let status = read_u8(data, &mut offset);
+
+        // 返回结构体实例
         Some(Self {
             bump,
             amm_config,
