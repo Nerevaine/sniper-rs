@@ -33,7 +33,7 @@ impl RaydiumClmmLayout {
             return None;
         }
 
-        let mut offset = 0;
+        let mut offset = 8; // 跳过discriminator
         
         // 1. 读取基础字段
         let mut bump = [0u8; 1];
