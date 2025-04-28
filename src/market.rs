@@ -3,13 +3,14 @@ use crate::dex::pump::{PumpLayout, print_pump_layout};
 use crate::dex::raydium_lp_v4::{RaydiumLpV4Layout, print_raydium_lp_v4_layout, SerumMarketLayout, process_market};
 use crate::dex::raydium_cpmm::{RaydiumCpLayout, print_raydium_cpmm_layout};
 use crate::dex::raydium_clmm::{RaydiumClmmLayout, print_raydium_clmm_layout};
+use crate::dex::solfi::{SolFiLayout, print_solfi_layout};
 
 // 账户数据大小常量
 const RAYDIUM_LP_V4_ACCOUNT_SIZE: usize = 752;
 const SERUM_MARKET_ACCOUNT_SIZE: usize = 388;
-
 const RAYDIUM_CP_POOL_SIZE: usize = 637;
 const RAYDIUM_CLMM_POOL_SIZE: usize = 1544;
+const SOLFI_POOL_SIZE: usize = 2800;
 
 
 /// 处理 pump 类型账户数据
@@ -72,6 +73,18 @@ pub fn raydium_clmm(account_key: String, buffer: Vec<u8>) {
         }
     } else {
         log::error!("Raydium CLMM 数据长度错误: {}, 期望 {}", buffer.len(), RAYDIUM_CLMM_POOL_SIZE);
+    }
+}
+
+/// 处理 SolFi Pool 类型账户数据，仅打印信息
+pub fn solfi(account_key: String, buffer: Vec<u8>) {
+    if buffer.len() == SOLFI_POOL_SIZE {
+        match SolFiLayout::try_from_slice_manual(buffer.as_slice()) {
+            Some(solfi_data) => print_solfi_layout(account_key, &solfi_data),
+            None => log::error!("无法解析 SolFi 数据: buffer长度 {}", buffer.len()),
+        }
+    } else {
+        log::error!("SolFi 数据长度错误: {}, 期望 {}", buffer.len(), SOLFI_POOL_SIZE);
     }
 }
 

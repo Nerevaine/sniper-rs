@@ -20,6 +20,7 @@ mod dex {
     pub mod raydium_lp_v4;
     pub mod raydium_cpmm;
     pub mod raydium_clmm;
+    pub mod solfi;
 }
 
 /// 命令行参数结构体
@@ -65,12 +66,13 @@ async fn main() -> anyhow::Result<()> {
     let raydium_lp_v4 = "675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8".to_string();
     let raydium_cpmm = "CPMMoo8L3F4NbTegBCKVNunggL7H1ZpdTHKxQB5qKP1C".to_string();
     let raydium_clmm = "CAMMCzo5YL8w4VFF8KVHrK22GGUsp5VTaW7grrKgrWqK".to_string();
+    let solfi = "SoLFiHG9TfgtdUXUjWAxi3LtvYuFyDLVhBWxdMZxyCe".to_string();
     
     accounts.insert(
         "client".to_string(),
         SubscribeRequestFilterAccounts {
             account: vec![],
-            owner: vec![pump.clone(), raydium_lp_v4.clone(), raydium_cpmm.clone(), raydium_clmm.clone()],
+            owner: vec![pump.clone(), raydium_lp_v4.clone(), raydium_cpmm.clone(), raydium_clmm.clone(), solfi.clone()],
             filters: vec![],
             nonempty_txn_signature: None,
         },
@@ -122,18 +124,21 @@ async fn main() -> anyhow::Result<()> {
 
                         let buffer = account.data.clone();  
                         // 根据 owner 类型分别处理
-                        if owner == pump {
-                            market::pump(ammkey.clone(), buffer.clone())
-                        } 
+                        // if owner == pump {
+                        //     market::pump(ammkey.clone(), buffer.clone())
+                        // } 
                         // if owner == raydium_lp_v4 {
                         //     market::raydium_lp_v4(ammkey.clone(), buffer.clone())
                         // }  
                         // if owner == raydium_cpmm {
-                        //         market::raydium_cpmm(ammkey.clone(), buffer.clone())
+                        //     market::raydium_cpmm(ammkey.clone(), buffer.clone())
                         // } 
                         // if owner == raydium_clmm {
-                        //         market::raydium_clmm(ammkey, buffer)
+                        //     market::raydium_clmm(ammkey.clone(), buffer.clone())
                         // } 
+                        if owner == solfi {
+                            market::solfi(ammkey, buffer)
+                        }
                     }
                     msg => anyhow::bail!("received unexpected message: {msg:?}"),
                 }
