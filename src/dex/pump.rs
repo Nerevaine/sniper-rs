@@ -30,10 +30,15 @@ impl PumpLayout {
 
         let mut offset = 0;
         
+        // 读取并解析账户数据中的 discriminator 字段
         let discriminator = {
+            // 创建一个 8 字节的缓冲区用于存储 discriminator
             let mut bytes = [0u8; 8];
+            // 从数据切片中复制前 8 个字节到缓冲区
             bytes.copy_from_slice(&data[offset..offset+8]);
+            // 将 offset 向后移动 8 个字节，为读取下一个字段做准备
             offset += 8;
+            // 将字节数组转换为小端序的 u64 整数
             u64::from_le_bytes(bytes)
         };
         

@@ -122,18 +122,18 @@ async fn main() -> anyhow::Result<()> {
 
                         let buffer = account.data.clone();  
                         // 根据 owner 类型分别处理
-                        // if owner == pump {
-                        //     market::pump(ammkey.clone(), buffer.clone())
-                        // } 
+                        if owner == pump {
+                            market::pump(ammkey.clone(), buffer.clone())
+                        } 
                         // if owner == raydium_lp_v4 {
                         //     market::raydium_lp_v4(ammkey.clone(), buffer.clone())
                         // }  
                         // if owner == raydium_cpmm {
                         //         market::raydium_cpmm(ammkey.clone(), buffer.clone())
                         // } 
-                        if owner == raydium_clmm {
-                                market::raydium_clmm(ammkey, buffer)
-                        } 
+                        // if owner == raydium_clmm {
+                        //         market::raydium_clmm(ammkey, buffer)
+                        // } 
                     }
                     msg => anyhow::bail!("received unexpected message: {msg:?}"),
                 }

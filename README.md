@@ -1,34 +1,24 @@
-### GRPC数据订阅
+# Rust gRPC 项目
 
-#### 成功订阅raydiumClmm
-* 数据返回正常，长度为:
-    * 池子数据长度: 1544字节
-* 数据一 池子信息：成功获取
+## 功能说明
 
-池子信息结构:
-```Typescript
-export const RAYDIUM_CLMM_LAYOUT = struct([
-        u64('discriminator'),
-        u8('bump'),
-        publicKey('ammConfig'),
-        publicKey('owner'),
-        publicKey('tokenMint0'),
-        publicKey('tokenMint1'),
-        publicKey('tokenVault0'),
-        publicKey('tokenVault1'),
-        publicKey('observationKey'),
-        u8('mintDecimals0'),
-        u8('mintDecimals1'),
-        u16('tickSpacing'),
-        u128('liquidity'),
-        u128('sqrtPriceX64'),
-        i32('tickCurrent'),
-        u8('status'),
-        u64('protocolFeesToken0'),
-        u64('protocolFeesToken1')
-]);
-```
+### 支持的交易所数据解析
+目前项目可以正确解析和读取以下交易所的数据：
 
+1. Pump DEX
+   - 文件：`src/dex/pump.rs`
+   - 支持解析流动性池账户数据
 
+2. Raydium DEX
+   - CLMM (Concentrated Liquidity Market Maker)
+     - 文件：`src/dex/raydium_clmm.rs`
+     - 支持解析集中流动性做市商池数据
+   - CPMM (Constant Product Market Maker)
+     - 文件：`src/dex/raydium_cpmm.rs`
+     - 支持解析恒定乘积做市商池数据
+   - LP V4 (Liquidity Pool Version 4)
+     - 文件：`src/dex/raydium_lp_v4.rs`
+     - 支持解析 V4 版本流动性池数据
 
-
+### 开发中的功能
+- SolFi 交易所数据解析（进行中）
