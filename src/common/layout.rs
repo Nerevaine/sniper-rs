@@ -32,6 +32,27 @@ pub fn read_u128(data: &[u8], offset: &mut usize) -> u128 {
     u128::from_le_bytes(bytes.try_into().unwrap())
 }
 
+// 从字节流读取 u32 类型，并推进 offset
+pub fn read_u32(data: &[u8], offset: &mut usize) -> u32 {
+    let bytes = &data[*offset..*offset+4];
+    *offset += 4;
+    u32::from_le_bytes(bytes.try_into().unwrap())
+}
+
+// 从字节流读取 i32 类型，并推进 offset
+pub fn read_i32(data: &[u8], offset: &mut usize) -> i32 {
+    let bytes = &data[*offset..*offset+4];
+    *offset += 4;
+    i32::from_le_bytes(bytes.try_into().unwrap())
+}
+
+// 从字节流读取 i64 类型，并推进 offset
+pub fn read_i64(data: &[u8], offset: &mut usize) -> i64 {
+    let bytes = &data[*offset..*offset+8];
+    *offset += 8;
+    i64::from_le_bytes(bytes.try_into().unwrap())
+}
+
 // 从字节流读取 Pubkey 类型（32字节），并推进 offset
 pub fn read_pubkey(data: &[u8], offset: &mut usize) -> Pubkey {
     let mut key = [0u8; 32];

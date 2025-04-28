@@ -2,6 +2,11 @@ use log;
 use solana_program::pubkey::Pubkey;
 use crate::common::layout::{read_pubkey, read_u64, read_u8};
 
+
+
+pub const RAYDIUM_CP_POOL_SIZE: usize = 637;
+
+
 #[allow(non_snake_case)]
 #[derive(Debug, Clone)]
 #[allow(dead_code)]
@@ -32,7 +37,7 @@ pub struct RaydiumCpLayout {
 
 impl RaydiumCpLayout {
     pub fn try_from_slice_manual(data: &[u8]) -> Option<Self> {
-        if data.len() < 336 {
+        if data.len() < RAYDIUM_CP_POOL_SIZE {
             log::error!("数据长度不足，无法解析 RaydiumCpLayout");
             return None;
         }

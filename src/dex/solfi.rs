@@ -3,11 +3,10 @@ use solana_program::pubkey::Pubkey;
 use crate::common::layout::{read_pubkey, read_u64, read_u8, read_u16, read_u128};
 
 // 账户数据大小常量
-const SOLFI_POOL_SIZE: usize = 2800;
+pub const SOLFI_POOL_SIZE: usize = 904;
 
 #[derive(Debug)]
 pub struct SolFiLayout {
-    pub bump: [u8; 1],
     pub amm_config: Pubkey,
     pub owner: Pubkey,
     pub token_mint0: Pubkey,
@@ -35,8 +34,7 @@ impl SolFiLayout {
 
         let mut offset = 8; // 跳过discriminator
         
-        let mut bump = [0u8; 1];
-        bump[0] = read_u8(data, &mut offset);
+        offset += 1; // 跳过bump字段
         
         let amm_config = read_pubkey(data, &mut offset);
         let owner = read_pubkey(data, &mut offset);
@@ -68,7 +66,7 @@ impl SolFiLayout {
         let status = read_u8(data, &mut offset);
 
         Some(Self {
-            bump,
+           
             amm_config,
             owner,
             token_mint0,

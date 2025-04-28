@@ -3,6 +3,10 @@ use log;
 use solana_program::pubkey::Pubkey;
 use crate::common::layout::{read_pubkey, read_u64};
 
+
+pub const RAYDIUM_LP_V4_ACCOUNT_SIZE: usize = 752;
+pub const SERUM_MARKET_ACCOUNT_SIZE: usize = 388;
+
 #[allow(non_snake_case)]
 #[derive(Debug, Clone)]
 #[allow(dead_code)]
@@ -20,7 +24,7 @@ pub struct RaydiumLpV4Layout {
 
 impl RaydiumLpV4Layout {
     pub fn try_from_slice_manual(data: &[u8]) -> Option<Self> {
-        if data.len() < 752 {
+        if data.len() < RAYDIUM_LP_V4_ACCOUNT_SIZE {
             log::error!("数据长度不足，无法解析 RaydiumLpV4Layout");
             return None;
         }
@@ -43,7 +47,7 @@ impl RaydiumLpV4Layout {
 }
 
 pub fn print_raydium_lp_v4_layout(ammkey: String, raydium_data: &RaydiumLpV4Layout) {
-    log::info!("\n==================== Raydium LP V4 数据 ====================");
+    log::info!("==================== Raydium LP V4 数据 ====================");
     log::info!("AMM Address: (https://solscan.io/account/{}#anchorData)", ammkey);
     log::info!("Base Token Vault: {}", raydium_data.baseVault);
     log::info!("Quote Token Vault: {}", raydium_data.quoteVault);

@@ -77,7 +77,7 @@ impl PumpLayout {
 /// @param account_key - 账户地址字符串
 /// @param pump_data - PumpLayout 结构体引用
 pub fn print_pump_layout(account_key: String, pump_data: &PumpLayout) {
-    log::info!("\n==================== Pump 数据 ====================");
+    log::info!("==================== Pump 数据 ====================");
     log::info!("Pool Address: (https://solscan.io/account/{}#anchorData)", account_key);
     log::info!("Discriminator: {}", pump_data.discriminator);
     log::info!("Pool Bump: {}", pump_data.pool_bump);

@@ -1,16 +1,12 @@
 use log;
 use crate::dex::pump::{PumpLayout, print_pump_layout};
-use crate::dex::raydium_lp_v4::{RaydiumLpV4Layout, print_raydium_lp_v4_layout, SerumMarketLayout, process_market};
-use crate::dex::raydium_cpmm::{RaydiumCpLayout, print_raydium_cpmm_layout};
-use crate::dex::raydium_clmm::{RaydiumClmmLayout, print_raydium_clmm_layout};
-use crate::dex::solfi::{SolFiLayout, print_solfi_layout};
+use crate::dex::raydium_lp_v4::{RaydiumLpV4Layout, print_raydium_lp_v4_layout, SerumMarketLayout, process_market, RAYDIUM_LP_V4_ACCOUNT_SIZE, SERUM_MARKET_ACCOUNT_SIZE};
+use crate::dex::raydium_cpmm::{RaydiumCpLayout, print_raydium_cpmm_layout, RAYDIUM_CP_POOL_SIZE};
+use crate::dex::raydium_clmm::{RaydiumClmmLayout, print_raydium_clmm_layout, RAYDIUM_CLMM_POOL_SIZE};
+use crate::dex::solfi::{SolFiLayout, print_solfi_layout, SOLFI_POOL_SIZE};
+use crate::dex::meteora_dlmm::{MeteoraLayout, print_meteora_layout, METEORA_DLMM_POOL_SIZE};
 
-// 账户数据大小常量
-const RAYDIUM_LP_V4_ACCOUNT_SIZE: usize = 752;
-const SERUM_MARKET_ACCOUNT_SIZE: usize = 388;
-const RAYDIUM_CP_POOL_SIZE: usize = 637;
-const RAYDIUM_CLMM_POOL_SIZE: usize = 1544;
-const SOLFI_POOL_SIZE: usize = 2800;
+
 
 
 /// 处理 pump 类型账户数据
@@ -85,6 +81,18 @@ pub fn solfi(account_key: String, buffer: Vec<u8>) {
         }
     } else {
         log::error!("SolFi 数据长度错误: {}, 期望 {}", buffer.len(), SOLFI_POOL_SIZE);
+    }
+}
+
+/// 处理 Meteora DLMM Pool 类型账户数据，仅打印信息
+pub fn meteora_dlmm(account_key: String, buffer: Vec<u8>) {
+    if buffer.len() == METEORA_DLMM_POOL_SIZE {
+        match MeteoraLayout::try_from_slice_manual(buffer.as_slice()) {
+            Some(meteora_data) => print_meteora_layout(account_key, &meteora_data),
+            None => log::error!("无法解析 Meteora DLMM 数据: buffer长度 {}", buffer.len()),
+        }
+    } else {
+        log::error!("Meteora DLMM 数据长度错误: {}, 期望 {}", buffer.len(), METEORA_DLMM_POOL_SIZE);
     }
 }
 
