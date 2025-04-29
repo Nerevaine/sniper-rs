@@ -4,6 +4,7 @@ use crate::common::binary_reader::{read_pubkey, read_u64, read_u8, read_u16, rea
 
 // 账户数据大小常量
 pub const METEORA_DLMM_POOL_SIZE: usize = 904;
+pub const METEORA_DLMM_BIN_ARRAY_SIZE: usize = 3232; // 添加 BinArray 大小常量
 
 #[derive(Debug)]
 pub struct StaticParameters {
@@ -269,4 +270,109 @@ pub fn print_meteora_layout(account_key: String, data: &MeteoraLayout) {
     // log::info!("\nOracle: {}", data.oracle);
     log::info!("Last Updated At: {}", data.last_updated_at);
     log::info!("======================================================\n");
+}
+
+#[derive(Debug)]
+pub struct BinArrayLayout {
+    pub discriminator: u64,  // 账户类型识别码，占用 8 字节
+    pub idx: u64,            // BinArray 的索引，占用 8 字节
+    pub active_size: u64,    // 活跃的 bin 数量，占用 8 字节
+    pub length: u64,         // 总 bin 数量，占用 8 字节
+    pub bins: Vec<Bin>,      // bin 数组
+}
+
+#[derive(Debug, Clone)]
+pub struct Bin {
+    pub amount_x: u64,       // X 代币数量
+    pub amount_y: u64,       // Y 代币数量
+    pub price: u64,          // 价格
+    pub liquidity: u64,      // 流动性
+}
+
+impl BinArrayLayout {
+    pub fn try_from_slice_manual(data: &[u8]) -> Option<Self> {
+        if data.len() != METEORA_DLMM_BIN_ARRAY_SIZE {
+            log::error!("BinArray 数据长度不匹配: 期望 {}, 实际 {}", METEORA_DLMM_BIN_ARRAY_SIZE, data.len());
+            return None;
+        }
+
+        let mut offset = 8; // 跳过 8 字节 discriminator
+
+        // 读取基本字段
+        let discriminator = {
+            let mut bytes = [0u8; 8];
+            bytes.copy_from_slice(&data[0..8]);
+            u64::from_le_bytes(bytes)
+        };
+        
+        let idx = read_u64(data, &mut offset);
+        let active_size = read_u64(data, &mut offset);
+        let length = read_u64(data, &mut offset);
+        
+        // 计算 bin 的数量 (通常是 100)
+        let bin_count = length as usize;
+        let mut bins = Vec::with_capacity(bin_count);
+        
+        // 读取所有 bin 数据
+        for _ in 0..bin_count {
+            let amount_x = read_u64(data, &mut offset);
+            let amount_y = read_u64(data, &mut offset);
+            let price = read_u64(data, &mut offset);
+            let liquidity = read_u64(data, &mut offset);
+            
+            bins.push(Bin {
+                amount_x,
+                amount_y,
+                price,
+                liquidity,
+            });
+        }
+        
+        Some(Self {
+            discriminator,
+            idx,
+            active_size,
+            length,
+            bins,
+        })
+    }
+}
+
+pub fn print_bin_array_layout(account_key: String, data: &BinArrayLayout) {
+    log::info!("==================== Meteora DLMM BinArray 数据 ====================");
+    log::info!("BinArray Address: (https://solscan.io/account/{}#anchorData)", account_key);
+    
+    log::info!("Discriminator: {}", data.discriminator);// discriminator 用于区分不同类型的账户
+    log::info!("idx: {}", data.idx);
+    log::info!("Active Size: {}", data.active_size);
+    log::info!("Length: {}", data.length);
+    
+    // 打印前 5 个和后 5 个 bin (如果有足够多的 bin)
+    let bin_count = data.bins.len();
+    log::info!("\n总共 {} 个 Bin，显示部分数据:", bin_count);
+    
+    // 打印前 5 个 bin
+    let front_limit = std::cmp::min(5, bin_count);
+    for i in 0..front_limit {
+        let bin = &data.bins[i];
+        log::info!("Bin[{}]: X={}, Y={}, Price={}, Liquidity={}", 
+            i, bin.amount_x, bin.amount_y, bin.price, bin.liquidity);
+    }
+    
+    // 如果 bin 数量超过 10 个，打印省略号
+    if bin_count > 10 {
+        log::info!("...");
+    }
+    
+    // 打印后 5 个 bin
+    if bin_count > 5 {
+        let back_start = std::cmp::max(front_limit, bin_count - 5);
+        for i in back_start..bin_count {
+            let bin = &data.bins[i];
+            log::info!("Bin[{}]: X={}, Y={}, Price={}, Liquidity={}", 
+                i, bin.amount_x, bin.amount_y, bin.price, bin.liquidity);
+        }
+    }
+    
+    log::info!("==============================================================\n");
 }

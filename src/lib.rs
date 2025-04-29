@@ -3,7 +3,7 @@
 //! 该库提供了处理各种 DEX 协议数据的功能
 
 pub mod common;
-pub mod config;  // 添加 config 模块
+ // 添加 config 模块
 pub mod dex;
 pub mod dex_processor;  // 注意这里改成 pub
 

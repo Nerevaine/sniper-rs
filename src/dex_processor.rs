@@ -5,7 +5,14 @@ use crate::dex::raydium_lp_v4::{RaydiumLpV4Layout, print_raydium_lp_v4_layout, S
 use crate::dex::raydium_cpmm::{RaydiumCpLayout, print_raydium_cpmm_layout, RAYDIUM_CP_POOL_SIZE}; 
 use crate::dex::raydium_clmm::{RaydiumClmmLayout, print_raydium_clmm_layout, RAYDIUM_CLMM_POOL_SIZE};
 use crate::dex::solfi::{SolFiLayout, print_solfi_layout, SOLFI_POOL_SIZE};
-use crate::dex::meteora_dlmm::{MeteoraLayout, print_meteora_layout, METEORA_DLMM_POOL_SIZE};
+use crate::dex::meteora_dlmm::{
+    METEORA_DLMM_POOL_SIZE,
+    METEORA_DLMM_BIN_ARRAY_SIZE,
+    MeteoraLayout,
+    BinArrayLayout,
+    print_meteora_layout,
+    print_bin_array_layout
+};
 
 
 
@@ -92,8 +99,13 @@ pub fn meteora_dlmm(account_key: String, buffer: Vec<u8>) {
             Some(meteora_data) => print_meteora_layout(account_key, &meteora_data),
             None => log::error!("无法解析 Meteora DLMM 数据: buffer长度 {}", buffer.len()),
         }
+    } else if buffer.len() == METEORA_DLMM_BIN_ARRAY_SIZE {
+        match BinArrayLayout::try_from_slice_manual(buffer.as_slice()) {
+            Some(bin_array_data) => print_bin_array_layout(account_key, &bin_array_data),
+            None => log::error!("无法解析 Meteora DLMM BinArray 数据: buffer长度 {}", buffer.len()),
+        }
     } else {
-        log::error!("Meteora DLMM 数据长度错误: {}, 期望 {}", buffer.len(), METEORA_DLMM_POOL_SIZE);
+        log::error!("未知的 Meteora DLMM 数据类型: 数据长度 = {}", buffer.len());
     }
 }
 
