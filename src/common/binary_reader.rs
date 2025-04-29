@@ -53,6 +53,13 @@ pub fn read_i64(data: &[u8], offset: &mut usize) -> i64 {
     i64::from_le_bytes(bytes.try_into().unwrap())
 }
 
+// 从字节流读取 bool 类型，并推进 offset
+pub fn read_bool(data: &[u8], offset: &mut usize) -> bool {
+    let value = data[*offset] != 0;
+    *offset += 1;
+    value
+}
+
 // 从字节流读取 Pubkey 类型（32字节），并推进 offset
 pub fn read_pubkey(data: &[u8], offset: &mut usize) -> Pubkey {
     let mut key = [0u8; 32];
