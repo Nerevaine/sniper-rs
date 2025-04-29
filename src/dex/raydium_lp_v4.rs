@@ -1,7 +1,7 @@
 /// Represents the layout of Raydium data, providing methods for#![allow(unused_imports)]
 use log;
 use solana_program::pubkey::Pubkey;
-use crate::common::layout::{read_pubkey, read_u64};
+use crate::common::binary_reader::{read_pubkey, read_u64};
 
 
 pub const RAYDIUM_LP_V4_ACCOUNT_SIZE: usize = 752;

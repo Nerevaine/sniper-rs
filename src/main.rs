@@ -13,7 +13,7 @@ use yellowstone_grpc_proto::prelude::{
 use solana_sdk::pubkey::Pubkey;
 mod market;
 mod common {
-    pub mod layout;
+    pub mod binary_reader;
 }
 mod dex {
     pub mod pump;

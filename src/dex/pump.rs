@@ -1,5 +1,6 @@
 use log;
 use solana_program::pubkey::Pubkey;
+use crate::common::binary_reader::{read_pubkey, read_u64, read_u8};
 
 /// PumpLayout 结构体定义了流动性池的账户数据布局
 #[derive(Debug)]
@@ -50,13 +51,6 @@ impl PumpLayout {
             bytes.copy_from_slice(&data[offset..offset+2]);
             offset += 2;
             u16::from_le_bytes(bytes)
-        };
-        
-        let read_pubkey = |data: &[u8], offset: &mut usize| {
-            let mut key = [0u8; 32];
-            key.copy_from_slice(&data[*offset..*offset+32]);
-            *offset += 32;
-            Pubkey::new_from_array(key)
         };
         
         Some(Self {

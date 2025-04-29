@@ -1,6 +1,6 @@
 use log;
 use solana_program::pubkey::Pubkey;
-use crate::common::layout::{read_pubkey, read_u64, read_u8, read_u16, read_u32, read_i32, read_i64};
+use crate::common::binary_reader::{read_pubkey, read_u64, read_u8, read_u16, read_u32, read_i32, read_i64};
 
 // 账户数据大小常量
 pub const METEORA_DLMM_POOL_SIZE: usize = 904;
@@ -66,7 +66,6 @@ pub struct MeteoraLayout {
     pub reserve_y: Pubkey,
     pub protocol_fee: ProtocolFee,
     pub reward_infos: [RewardInfo; 2],
-    pub oracle: Pubkey,
     pub bin_array_bitmap: [u64; 16],
     pub last_updated_at: i64,
 }
@@ -175,7 +174,6 @@ impl MeteoraLayout {
         }
 
         // 确保读取完 RewardInfos 后的 offset 正确
-        let oracle = read_pubkey(data, &mut offset);
 
         // 读取 binArrayBitmap
         let mut bin_array_bitmap = [0u64; 16];
@@ -204,7 +202,6 @@ impl MeteoraLayout {
             reserve_y,
             protocol_fee,
             reward_infos,
-            oracle,
             bin_array_bitmap,
             last_updated_at,
         })
@@ -268,7 +265,8 @@ pub fn print_meteora_layout(account_key: String, data: &MeteoraLayout) {
             reward.cumulative_seconds_with_empty_liquidity_reward);
     }
     
-    log::info!("\nOracle: {}", data.oracle);
+    // 删除打印 Oracle 的代码
+    // log::info!("\nOracle: {}", data.oracle);
     log::info!("Last Updated At: {}", data.last_updated_at);
     log::info!("======================================================\n");
 }

@@ -1,6 +1,6 @@
 use log;
 use solana_program::pubkey::Pubkey;
-use crate::common::layout::{read_pubkey, read_u64, read_u8};
+use crate::common::binary_reader::{read_pubkey, read_u64, read_u8};
 
 
 
