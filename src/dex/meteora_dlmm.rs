@@ -152,7 +152,6 @@ impl MeteoraLayout {
         offset += 32; // 跳过padding1
 
         // 读取 RewardInfos
-        // Use core::array::from_fn to initialize the array without requiring Copy trait
         let mut reward_infos: [RewardInfo; 2] = core::array::from_fn(|_| RewardInfo {
             mint: Pubkey::default(),
             vault: Pubkey::default(),
@@ -163,7 +162,6 @@ impl MeteoraLayout {
             last_update_time: 0,
             cumulative_seconds_with_empty_liquidity_reward: 0,
         });
-
 
         for reward_info in reward_infos.iter_mut() {
             reward_info.mint = read_pubkey(data, &mut offset);
@@ -176,6 +174,7 @@ impl MeteoraLayout {
             reward_info.cumulative_seconds_with_empty_liquidity_reward = read_u64(data, &mut offset);
         }
 
+        // 确保读取完 RewardInfos 后的 offset 正确
         let oracle = read_pubkey(data, &mut offset);
 
         // 读取 binArrayBitmap
@@ -262,7 +261,11 @@ pub fn print_meteora_layout(account_key: String, data: &MeteoraLayout) {
         log::info!("    Vault: {}", reward.vault);
         log::info!("    Funder: {}", reward.funder);
         log::info!("    Duration: {}", reward.reward_duration);
+        log::info!("    Duration End: {}", reward.reward_duration_end);
         log::info!("    Rate: {}", reward.reward_rate);
+        log::info!("    Last Update Time: {}", reward.last_update_time);
+        log::info!("    Cumulative Empty Liquidity Seconds: {}", 
+            reward.cumulative_seconds_with_empty_liquidity_reward);
     }
     
     log::info!("\nOracle: {}", data.oracle);
