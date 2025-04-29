@@ -212,7 +212,7 @@ impl MeteoraLayout {
 }
 
 pub fn print_meteora_layout(account_key: String, data: &MeteoraLayout) {
-    log::info!("==================== Meteora DLMM 数据 ====================");
+    log::info!("==================== Meteora DLMM LbPair 数据 ====================");
     log::info!("Pool Address: (https://solscan.io/account/{}#anchorData)", account_key);
     
     // 打印 StaticParameters
@@ -442,8 +442,8 @@ pub fn print_bin_array_layout(account_key: String, data: &BinArrayLayout) {
     log::info!("Version: {}", data.version);
     log::info!("LB Pair: {}", data.lb_pair);
     
-    log::info!("\nBins 数据:");
-    for (i, bin) in data.bins.iter().enumerate() {
+    log::info!("\nBins 数据 (显示前5个):");
+    for (i, bin) in data.bins.iter().enumerate().take(5) {
         log::info!("Bin[{}]:", i);
         log::info!("  Amount X: {}", bin.amount_x);
         log::info!("  Amount Y: {}", bin.amount_y);
@@ -454,6 +454,10 @@ pub fn print_bin_array_layout(account_key: String, data: &BinArrayLayout) {
         log::info!("  Fee Amount Y Per Token: {}", bin.fee_amount_y_per_token_stored);
         log::info!("  Amount X In: {}", bin.amount_x_in);
         log::info!("  Amount Y In: {}", bin.amount_y_in);
+    }
+    
+    if data.bins.len() > 5 {
+        log::info!("\n... 还有 {} 个 Bin 未显示", data.bins.len() - 5);
     }
     
     log::info!("==============================================================\n");
