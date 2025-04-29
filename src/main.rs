@@ -15,6 +15,7 @@ use solana_sdk::pubkey::Pubkey;
 pub mod common;
 pub mod dex;
 pub mod dex_processor;
+pub mod meteora_pools;
 
 
 /// 命令行参数结构体
@@ -61,13 +62,14 @@ async fn main() -> anyhow::Result<()> {
     let raydium_cpmm = "CPMMoo8L3F4NbTegBCKVNunggL7H1ZpdTHKxQB5qKP1C".to_string();
     let raydium_clmm = "CAMMCzo5YL8w4VFF8KVHrK22GGUsp5VTaW7grrKgrWqK".to_string();
     let solfi = "LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo".to_string();
-    let meteora_dlmm = "LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo".to_string();  // 添加新地址
-
+    let meteora_dlmm = "LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo".to_string();
+    let meteora_pools = "Eo7WjKq67rjJQSZxS6z3YkapzY3eMj6Xy8X5EQVn5UaB".to_string();
+    
     accounts.insert(
         "client".to_string(),
         SubscribeRequestFilterAccounts {
             account: vec![],
-            owner: vec![pump.clone(), raydium_lp_v4.clone(), raydium_cpmm.clone(), raydium_clmm.clone(), solfi.clone(), meteora_dlmm.clone()],
+            owner: vec![pump.clone(), raydium_lp_v4.clone(), raydium_cpmm.clone(), raydium_clmm.clone(), solfi.clone(), meteora_dlmm.clone(), meteora_pools.clone()],
             filters: vec![],
             nonempty_txn_signature: None,
         },
@@ -134,8 +136,10 @@ async fn main() -> anyhow::Result<()> {
                         // if owner == solfi {
                         //     dex_processor::solfi(ammkey.clone(), buffer.clone())
                         // }
-                        if owner == meteora_dlmm {
-                            dex_processor::meteora_dlmm(ammkey.clone(), buffer.clone())
+                        // if owner == meteora_dlmm {
+                        //     dex_processor::meteora_dlmm(ammkey.clone(), buffer.clone())
+                           if owner == meteora_pools {
+                            dex_processor::meteora_pools(ammkey.clone(), buffer.clone())
                         }
 
                     }

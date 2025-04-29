@@ -11,11 +11,12 @@ use crate::dex::meteora_dlmm::{
     METEORA_DLMM_BIN_ARRAY_SIZE,
     MeteoraLayout,
     OracleLayout,
-    BinArrayLayout,  // Add this line
+    BinArrayLayout,
     print_meteora_layout,
     print_oracle_layout,
     print_bin_array_layout,
 };
+use crate::dex::meteora_pools::{MeteoraPools, print_meteora_pools_layout, METEORA_POOLS_SIZE};
 
 
 
@@ -114,6 +115,18 @@ pub fn meteora_dlmm(account_key: String, buffer: Vec<u8>) {
         }
     } else {
         log::error!("未知的 Meteora DLMM 数据类型: 数据长度 = {}", buffer.len());
+    }
+}
+
+/// 处理 Meteora Pools 类型账户数据，仅打印信息
+pub fn meteora_pools(account_key: String, buffer: Vec<u8>) {
+    if buffer.len() == METEORA_POOLS_SIZE {
+        match MeteoraPools::try_from_slice_manual(buffer.as_slice()) {
+            Some(pools_data) => print_meteora_pools_layout(account_key, &pools_data),
+            None => log::error!("无法解析 Meteora Pools 数据: buffer长度 {}", buffer.len()),
+        }
+    } else {
+        log::error!("Meteora Pools 数据长度错误: {}, 期望 {}", buffer.len(), METEORA_POOLS_SIZE);
     }
 }
 
