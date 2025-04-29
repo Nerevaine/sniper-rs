@@ -17,6 +17,7 @@ pub struct StaticParameters {
     pub max_bin_id: i32,
     pub protocol_share: u16,
     pub base_fee_power_factor: u8,
+    pub padding: [u8; 5], // 新增
 }
 
 #[derive(Debug)]
@@ -91,6 +92,12 @@ impl MeteoraLayout {
             max_bin_id: read_i32(data, &mut offset),
             protocol_share: read_u16(data, &mut offset),
             base_fee_power_factor: read_u8(data, &mut offset),
+            padding: {
+                let mut arr = [0u8; 5];
+                arr.copy_from_slice(&data[offset..offset + 5]);
+                offset += 5;
+                arr
+            },
         };
 
         // offset += 1; // 移除这行：跳过padding (调整为 1 字节对齐) - 这里不需要跳过
@@ -100,14 +107,13 @@ impl MeteoraLayout {
             volatility_accumulator: read_u32(data, &mut offset),
             volatility_reference: read_u32(data, &mut offset),
             index_reference: read_i32(data, &mut offset),
-            // 添加这行：跳过 VariableParameters 结构体内部的 4 字节 padding
+            // 读取 padding
             // offset += 4; // 跳过 padding [u8; 4]
-            last_update_timestamp: read_i64(data, &mut offset), 
+            last_update_timestamp: {
+                offset += 4; // 跳过 padding
+                read_i64(data, &mut offset)
+            },
         };
-        
-        // 移除这行：跳过 VariableParameters 结构体内部的 4 字节 padding
-        offset += 4; // 跳过 padding [u8; 4]
-
         offset += 8; // 跳过 padding1 [u8; 8]
 
         // 读取基本字段
