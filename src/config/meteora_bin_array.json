@@ -1,0 +1,1023 @@
+{
+    "index": {
+      "type": "i64",
+      "data": "-11"
+    },
+    "version": {
+      "type": "u8",
+      "data": 1
+    },
+    "padding": {
+      "type": {
+        "array": [
+          "u8",
+          7
+        ]
+      },
+      "data": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "lbPair": {
+      "type": "publicKey",
+      "data": "Cgnuirsk5dQ9Ka1Grnru7J8YW1sYncYUjiXvYxT7G4iZ"
+    },
+    "bins": {
+      "type": {
+        "array": [
+          {
+            "defined": "Bin"
+          },
+          70
+        ]
+      },
+      "data": [
+        {
+          "amountX": "6080996876",
+          "amountY": "0",
+          "price": "3960720018869422096",
+          "liquiditySupply": "24071679271278977804573991460",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "10765483413313595739",
+          "feeAmountYPerTokenStored": "2252107236299112036",
+          "amountXIn": "130469731834",
+          "amountYIn": "26552196395"
+        },
+        {
+          "amountX": "6092321954",
+          "amountY": "0",
+          "price": "3968641458907160940",
+          "liquiditySupply": "24178239817640285549183732758",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "12097174522836449886",
+          "feeAmountYPerTokenStored": "2587011778293485273",
+          "amountXIn": "143301505496",
+          "amountYIn": "29466562073"
+        },
+        {
+          "amountX": "6108547747",
+          "amountY": "0",
+          "price": "3976578741824975262",
+          "liquiditySupply": "24290886642437613463604833740",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "12015039188115547380",
+          "feeAmountYPerTokenStored": "2575018237050479891",
+          "amountXIn": "148819684420",
+          "amountYIn": "30760373083"
+        },
+        {
+          "amountX": "5023942186",
+          "amountY": "0",
+          "price": "3984531899308625213",
+          "liquiditySupply": "20008985591170985226424013963",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "11268182790715137060",
+          "feeAmountYPerTokenStored": "2454974741676298046",
+          "amountXIn": "139920673968",
+          "amountYIn": "28934140485"
+        },
+        {
+          "amountX": "5044435493",
+          "amountY": "0",
+          "price": "3992500963107242463",
+          "liquiditySupply": "20050481121421898545450994338",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "12318782356309456992",
+          "feeAmountYPerTokenStored": "2657495986322296958",
+          "amountXIn": "165262461338",
+          "amountYIn": "34672673219"
+        },
+        {
+          "amountX": "4162142256",
+          "amountY": "0",
+          "price": "4000485965033456948",
+          "liquiditySupply": "16650547043050338948279703592",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "12897190544005045006",
+          "feeAmountYPerTokenStored": "2912721325468016117",
+          "amountXIn": "159456291867",
+          "amountYIn": "33626901535"
+        },
+        {
+          "amountX": "4173562855",
+          "amountY": "0",
+          "price": "4008486936963523862",
+          "liquiditySupply": "16729480659831777848315876296",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "14022522017772556908",
+          "feeAmountYPerTokenStored": "3042899502626316104",
+          "amountXIn": "166544361025",
+          "amountYIn": "35278818614"
+        },
+        {
+          "amountX": "3397385552",
+          "amountY": "0",
+          "price": "4016503910837450910",
+          "liquiditySupply": "13645559716656910930803921610",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "12797671307396255583",
+          "feeAmountYPerTokenStored": "2803842922368733535",
+          "amountXIn": "140606932576",
+          "amountYIn": "29760565863"
+        },
+        {
+          "amountX": "3399012164",
+          "amountY": "0",
+          "price": "4024536918659125812",
+          "liquiditySupply": "13679397166469526495950973021",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "12322308082287916469",
+          "feeAmountYPerTokenStored": "2725212647970010406",
+          "amountXIn": "130495722376",
+          "amountYIn": "27668736405"
+        },
+        {
+          "amountX": "3400833394",
+          "amountY": "0",
+          "price": "4032585992496444064",
+          "liquiditySupply": "13712262016472988518490632201",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "12932392824673751440",
+          "feeAmountYPerTokenStored": "2900009061072774758",
+          "amountXIn": "139518086686",
+          "amountYIn": "29751133523"
+        },
+        {
+          "amountX": "3402200083",
+          "amountY": "0",
+          "price": "4040651164481436952",
+          "liquiditySupply": "13747095166529644991729680431",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "11691352211361794479",
+          "feeAmountYPerTokenStored": "2674873419353961033",
+          "amountXIn": "113934552014",
+          "amountYIn": "23783665101"
+        },
+        {
+          "amountX": "3383140116",
+          "amountY": "0",
+          "price": "4048732466810399826",
+          "liquiditySupply": "13691573195606889507039490698",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "11070086674581575627",
+          "feeAmountYPerTokenStored": "2573427933821482944",
+          "amountXIn": "102974145569",
+          "amountYIn": "21408280956"
+        },
+        {
+          "amountX": "3385922236",
+          "amountY": "0",
+          "price": "4056829931744020626",
+          "liquiditySupply": "13721999697217146604958841527",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "14061013789100375346",
+          "feeAmountYPerTokenStored": "3253262900217636695",
+          "amountXIn": "130547106936",
+          "amountYIn": "27695388342"
+        },
+        {
+          "amountX": "3385839347",
+          "amountY": "0",
+          "price": "4064943591607508667",
+          "liquiditySupply": "13763182333131074026797151647",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "12525343444754112993",
+          "feeAmountYPerTokenStored": "2968145305171661105",
+          "amountXIn": "106037377535",
+          "amountYIn": "22853375399"
+        },
+        {
+          "amountX": "1791866389",
+          "amountY": "0",
+          "price": "4073073478790723685",
+          "liquiditySupply": "7298399737799847051607652822",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "15320984616245131028",
+          "feeAmountYPerTokenStored": "3601320234221161435",
+          "amountXIn": "148602119657",
+          "amountYIn": "32161082146"
+        },
+        {
+          "amountX": "1309600648",
+          "amountY": "0",
+          "price": "4081219625748305132",
+          "liquiditySupply": "5340188756933102442486102984",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "13856220570994663649",
+          "feeAmountYPerTokenStored": "3256442718897119555",
+          "amountXIn": "129800092271",
+          "amountYIn": "28073143247"
+        },
+        {
+          "amountX": "1240049956",
+          "amountY": "0",
+          "price": "4089382064999801743",
+          "liquiditySupply": "5071037161502958861919801837",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "16421555146058279600",
+          "feeAmountYPerTokenStored": "3709352405618875194",
+          "amountXIn": "121951003295",
+          "amountYIn": "26578891618"
+        },
+        {
+          "amountX": "1249583957",
+          "amountY": "0",
+          "price": "4097560829129801346",
+          "liquiditySupply": "5120045211804106674039280131",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "14829776691104971492",
+          "feeAmountYPerTokenStored": "3384948554927489914",
+          "amountXIn": "125458184214",
+          "amountYIn": "27522053314"
+        },
+        {
+          "amountX": "1258984564",
+          "amountY": "0",
+          "price": "4105755950788060949",
+          "liquiditySupply": "5169082932608299092531599630",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "11550104197786158967",
+          "feeAmountYPerTokenStored": "2686167784599086564",
+          "amountXIn": "92879838870",
+          "amountYIn": "20372966050"
+        },
+        {
+          "amountX": "1269467347",
+          "amountY": "0",
+          "price": "4113967462689637071",
+          "liquiditySupply": "5217758266111452320908693743",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "11858200973842702167",
+          "feeAmountYPerTokenStored": "2764082195770817203",
+          "amountXIn": "98105897251",
+          "amountYIn": "21584507897"
+        },
+        {
+          "amountX": "1277748899",
+          "amountY": "0",
+          "price": "4122195397615016345",
+          "liquiditySupply": "5267128517698031453987629178",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "11986861617369839858",
+          "feeAmountYPerTokenStored": "2837720792780304344",
+          "amountXIn": "90316477844",
+          "amountYIn": "19901578130"
+        },
+        {
+          "amountX": "1284877596",
+          "amountY": "0",
+          "price": "4130439788410246378",
+          "liquiditySupply": "5300827563997284121334750258",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "10503712229374971234",
+          "feeAmountYPerTokenStored": "2511964591855371944",
+          "amountXIn": "80370169222",
+          "amountYIn": "17722455021"
+        },
+        {
+          "amountX": "758284678",
+          "amountY": "0",
+          "price": "4138700667987066871",
+          "liquiditySupply": "3138313059156518304416659270",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "9856776920333075941",
+          "feeAmountYPerTokenStored": "2416053523126622350",
+          "amountXIn": "61534671026",
+          "amountYIn": "13435588072"
+        },
+        {
+          "amountX": "768595013",
+          "amountY": "0",
+          "price": "4146978069323041005",
+          "liquiditySupply": "3187334496337040188321700624",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "8262948994086218516",
+          "feeAmountYPerTokenStored": "2084960688726283697",
+          "amountXIn": "56175207088",
+          "amountYIn": "12263173912"
+        },
+        {
+          "amountX": "778856106",
+          "amountY": "0",
+          "price": "4155272025461687087",
+          "liquiditySupply": "3236358773175291028105606454",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "7265573978404079132",
+          "feeAmountYPerTokenStored": "1886804634485450706",
+          "amountXIn": "53515234414",
+          "amountYIn": "11894211009"
+        },
+        {
+          "amountX": "789075696",
+          "amountY": "0",
+          "price": "4163582569512610461",
+          "liquiditySupply": "3285381635584980057781569749",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "6605789263898924736",
+          "feeAmountYPerTokenStored": "1763987478577360954",
+          "amountXIn": "43630396759",
+          "amountYIn": "9696464745"
+        },
+        {
+          "amountX": "730041172",
+          "amountY": "0",
+          "price": "4171909734651635683",
+          "liquiditySupply": "3045665751908542200829768493",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "5638764401842137602",
+          "feeAmountYPerTokenStored": "1567273511269426630",
+          "amountXIn": "32184427349",
+          "amountYIn": "7136657641"
+        },
+        {
+          "amountX": "740311251",
+          "amountY": "0",
+          "price": "4180253554120938954",
+          "liquiditySupply": "3094688609097717348764991649",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "4544080437582542057",
+          "feeAmountYPerTokenStored": "1334326603675623823",
+          "amountXIn": "31582120179",
+          "amountYIn": "7014467709"
+        },
+        {
+          "amountX": "751107632",
+          "amountY": "0",
+          "price": "4188614061229180832",
+          "liquiditySupply": "3143640896995496713448642797",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "3942779370700926058",
+          "feeAmountYPerTokenStored": "1097609513273230626",
+          "amountXIn": "27824491627",
+          "amountYIn": "6140043776"
+        },
+        {
+          "amountX": "763941211",
+          "amountY": "0",
+          "price": "4196991289351639193",
+          "liquiditySupply": "3192342553747284598465739169",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "3020762861030681598",
+          "feeAmountYPerTokenStored": "610326186744457251",
+          "amountXIn": "17815844381",
+          "amountYIn": "3840937741"
+        },
+        {
+          "amountX": "770858568",
+          "amountY": "0",
+          "price": "4205385271930342472",
+          "liquiditySupply": "3241757177885760427554172300",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "2773110973316773743",
+          "feeAmountYPerTokenStored": "632198775618345219",
+          "amountXIn": "18391140771",
+          "amountYIn": "4192709144"
+        },
+        {
+          "amountX": "780953824",
+          "amountY": "0",
+          "price": "4213796042474203157",
+          "liquiditySupply": "3290780033393737246804950634",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "2946172712292782653",
+          "feeAmountYPerTokenStored": "672995662485288041",
+          "amountXIn": "20206662879",
+          "amountYIn": "4615814898"
+        },
+        {
+          "amountX": "791005713",
+          "amountY": "0",
+          "price": "4222223634559151564",
+          "liquiditySupply": "3339802886431047417199040565",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "3186755296099606405",
+          "feeAmountYPerTokenStored": "729408136592780033",
+          "amountXIn": "19876560155",
+          "amountYIn": "4543878648"
+        },
+        {
+          "amountX": "801014343",
+          "amountY": "0",
+          "price": "4230668081828269867",
+          "liquiditySupply": "3388825744589002229175348688",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "2527982715441749123",
+          "feeAmountYPerTokenStored": "579780476783615762",
+          "amountXIn": "16221293864",
+          "amountYIn": "3720272258"
+        },
+        {
+          "amountX": "789681033",
+          "amountY": "0",
+          "price": "4239129417991926407",
+          "liquiditySupply": "3347559873146694077167638860",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "2354372466712158455",
+          "feeAmountYPerTokenStored": "541043341630385058",
+          "amountXIn": "13634747335",
+          "amountYIn": "3133314914"
+        },
+        {
+          "amountX": "799646072",
+          "amountY": "0",
+          "price": "4247607676827910260",
+          "liquiditySupply": "3396582730458368706958844820",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "1341326600108467566",
+          "feeAmountYPerTokenStored": "308858383840918140",
+          "amountXIn": "10904580805",
+          "amountYIn": "2510924469"
+        },
+        {
+          "amountX": "809568221",
+          "amountY": "0",
+          "price": "4256102892181566080",
+          "liquiditySupply": "3445605582974841877656052480",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "1244829125016913998",
+          "feeAmountYPerTokenStored": "287211812775131637",
+          "amountXIn": "10022043702",
+          "amountYIn": "2312324005"
+        },
+        {
+          "amountX": "819447569",
+          "amountY": "0",
+          "price": "4264615097965929213",
+          "liquiditySupply": "3494628436367341656725570280",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "998361779776169836",
+          "feeAmountYPerTokenStored": "230806575310742461",
+          "amountXIn": "6268548683",
+          "amountYIn": "1449195981"
+        },
+        {
+          "amountX": "829284260",
+          "amountY": "0",
+          "price": "4273144328161861071",
+          "liquiditySupply": "3543651293594607165030292821",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "822184335429338848",
+          "feeAmountYPerTokenStored": "190457103458669868",
+          "amountXIn": "4944988646",
+          "amountYIn": "1145494843"
+        },
+        {
+          "amountX": "839078418",
+          "amountY": "0",
+          "price": "4281690616818184793",
+          "liquiditySupply": "3592674150590031138378434337",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "872117953462284262",
+          "feeAmountYPerTokenStored": "202428190317722946",
+          "amountXIn": "5121856059",
+          "amountYIn": "1188838689"
+        },
+        {
+          "amountX": "848830170",
+          "amountY": "0",
+          "price": "4290253998051821163",
+          "liquiditySupply": "3641697009058237036339781895",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "915185458573296292",
+          "feeAmountYPerTokenStored": "212849448449122499",
+          "amountXIn": "5170262626",
+          "amountYIn": "1202474530"
+        },
+        {
+          "amountX": "858539654",
+          "amountY": "0",
+          "price": "4298834506047924806",
+          "liquiditySupply": "3690719859333804728025783482",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "965113451863081189",
+          "feeAmountYPerTokenStored": "224910370707769494",
+          "amountXIn": "5282439818",
+          "amountYIn": "1231021284"
+        },
+        {
+          "amountX": "868206999",
+          "amountY": "0",
+          "price": "4307432175060020655",
+          "liquiditySupply": "3739742719030581427155357795",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "1017314267498535429",
+          "feeAmountYPerTokenStored": "237549390585121674",
+          "amountXIn": "4021628263",
+          "amountYIn": "939075800"
+        },
+        {
+          "amountX": "877832322",
+          "amountY": "0",
+          "price": "4316047039410140697",
+          "liquiditySupply": "3788765572886394121343504949",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "285778610684748160",
+          "feeAmountYPerTokenStored": "66864594039185122",
+          "amountXIn": "2632194760",
+          "amountYIn": "615863502"
+        },
+        {
+          "amountX": "887415767",
+          "amountY": "0",
+          "price": "4324679133488960978",
+          "liquiditySupply": "3837788428650606024880135236",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "303897545197458772",
+          "feeAmountYPerTokenStored": "71246155512719060",
+          "amountXIn": "2638976875",
+          "amountYIn": "618685237"
+        },
+        {
+          "amountX": "896957455",
+          "amountY": "0",
+          "price": "4333328491755938900",
+          "liquiditySupply": "3886811282644409961611682800",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "13212168099151275",
+          "feeAmountYPerTokenStored": "3103681463620927",
+          "amountXIn": "108171249",
+          "amountYIn": "25410531"
+        },
+        {
+          "amountX": "906457518",
+          "amountY": "0",
+          "price": "4341995148739450778",
+          "liquiditySupply": "3935834137010413083430147448",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "0",
+          "feeAmountYPerTokenStored": "0",
+          "amountXIn": "0",
+          "amountYIn": "0"
+        },
+        {
+          "amountX": "915916085",
+          "amountY": "0",
+          "price": "4350679139036929680",
+          "liquiditySupply": "3984856995416517024852043440",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "0",
+          "feeAmountYPerTokenStored": "0",
+          "amountXIn": "0",
+          "amountYIn": "0"
+        },
+        {
+          "amountX": "925333281",
+          "amountY": "0",
+          "price": "4359380497315003540",
+          "liquiditySupply": "4033879849989142921564807660",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "0",
+          "feeAmountYPerTokenStored": "0",
+          "amountXIn": "0",
+          "amountYIn": "0"
+        },
+        {
+          "amountX": "934709235",
+          "amountY": "0",
+          "price": "4368099258309633547",
+          "liquiditySupply": "4082902703034367190917805904",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "0",
+          "feeAmountYPerTokenStored": "0",
+          "amountXIn": "0",
+          "amountYIn": "0"
+        },
+        {
+          "amountX": "944044073",
+          "amountY": "0",
+          "price": "4376835456826252814",
+          "liquiditySupply": "4131925562759400446203765794",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "0",
+          "feeAmountYPerTokenStored": "0",
+          "amountXIn": "0",
+          "amountYIn": "0"
+        },
+        {
+          "amountX": "953337921",
+          "amountY": "0",
+          "price": "4385589127739905319",
+          "liquiditySupply": "4180948412628586510072491161",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "0",
+          "feeAmountYPerTokenStored": "0",
+          "amountXIn": "0",
+          "amountYIn": "0"
+        },
+        {
+          "amountX": "962590909",
+          "amountY": "0",
+          "price": "4394360305995385130",
+          "liquiditySupply": "4229971272632895310101012910",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "0",
+          "feeAmountYPerTokenStored": "0",
+          "amountXIn": "0",
+          "amountYIn": "0"
+        },
+        {
+          "amountX": "971803157",
+          "amountY": "0",
+          "price": "4403149026607375901",
+          "liquiditySupply": "4278994124798524900077519457",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "0",
+          "feeAmountYPerTokenStored": "0",
+          "amountXIn": "0",
+          "amountYIn": "0"
+        },
+        {
+          "amountX": "980974797",
+          "amountY": "0",
+          "price": "4411955324660590653",
+          "liquiditySupply": "4328016978981992009726772441",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "0",
+          "feeAmountYPerTokenStored": "0",
+          "amountXIn": "0",
+          "amountYIn": "0"
+        },
+        {
+          "amountX": "990105953",
+          "amountY": "0",
+          "price": "4420779235309911834",
+          "liquiditySupply": "4377039837779131506748547802",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "0",
+          "feeAmountYPerTokenStored": "0",
+          "amountXIn": "0",
+          "amountYIn": "0"
+        },
+        {
+          "amountX": "999196748",
+          "amountY": "0",
+          "price": "4429620793780531658",
+          "liquiditySupply": "4426062692018685858384648184",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "0",
+          "feeAmountYPerTokenStored": "0",
+          "amountXIn": "0",
+          "amountYIn": "0"
+        },
+        {
+          "amountX": "1008247308",
+          "amountY": "0",
+          "price": "4438480035368092721",
+          "liquiditySupply": "4475085547271624275042645068",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "0",
+          "feeAmountYPerTokenStored": "0",
+          "amountXIn": "0",
+          "amountYIn": "0"
+        },
+        {
+          "amountX": "1017257757",
+          "amountY": "0",
+          "price": "4447356995438828907",
+          "liquiditySupply": "4524108401758362324641581599",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "0",
+          "feeAmountYPerTokenStored": "0",
+          "amountXIn": "0",
+          "amountYIn": "0"
+        },
+        {
+          "amountX": "1026228219",
+          "amountY": "0",
+          "price": "4456251709429706565",
+          "liquiditySupply": "4573131255183753273892557735",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "0",
+          "feeAmountYPerTokenStored": "0",
+          "amountXIn": "0",
+          "amountYIn": "0"
+        },
+        {
+          "amountX": "1035158819",
+          "amountY": "0",
+          "price": "4465164212848565978",
+          "liquiditySupply": "4622154113213386183630059982",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "0",
+          "feeAmountYPerTokenStored": "0",
+          "amountXIn": "0",
+          "amountYIn": "0"
+        },
+        {
+          "amountX": "1044049679",
+          "amountY": "0",
+          "price": "4474094541274263110",
+          "liquiditySupply": "4671176969633046650957041690",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "0",
+          "feeAmountYPerTokenStored": "0",
+          "amountXIn": "0",
+          "amountYIn": "0"
+        },
+        {
+          "amountX": "1052900922",
+          "amountY": "0",
+          "price": "4483042730356811637",
+          "liquiditySupply": "4720199824158084361577629314",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "0",
+          "feeAmountYPerTokenStored": "0",
+          "amountXIn": "0",
+          "amountYIn": "0"
+        },
+        {
+          "amountX": "1061712672",
+          "amountY": "0",
+          "price": "4492008815817525260",
+          "liquiditySupply": "4769222682489180608222094720",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "0",
+          "feeAmountYPerTokenStored": "0",
+          "amountXIn": "0",
+          "amountYIn": "0"
+        },
+        {
+          "amountX": "1070485049",
+          "amountY": "0",
+          "price": "4500992833449160310",
+          "liquiditySupply": "4818245533863473213459205190",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "0",
+          "feeAmountYPerTokenStored": "0",
+          "amountXIn": "0",
+          "amountYIn": "0"
+        },
+        {
+          "amountX": "1079218178",
+          "amountY": "0",
+          "price": "4509994819116058631",
+          "liquiditySupply": "4867268391475872366288994318",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "0",
+          "feeAmountYPerTokenStored": "0",
+          "amountXIn": "0",
+          "amountYIn": "0"
+        },
+        {
+          "amountX": "1087912179",
+          "amountY": "0",
+          "price": "4519014808754290749",
+          "liquiditySupply": "4916291247525148724344132071",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "0",
+          "feeAmountYPerTokenStored": "0",
+          "amountXIn": "0",
+          "amountYIn": "0"
+        },
+        {
+          "amountX": "1096567173",
+          "amountY": "0",
+          "price": "4528052838371799330",
+          "liquiditySupply": "4965314100167989914221394090",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "0",
+          "feeAmountYPerTokenStored": "0",
+          "amountXIn": "0",
+          "amountYIn": "0"
+        },
+        {
+          "amountX": "1105183283",
+          "amountY": "0",
+          "price": "4537108944048542929",
+          "liquiditySupply": "5014336958112231985638655907",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "0",
+          "feeAmountYPerTokenStored": "0",
+          "amountXIn": "0",
+          "amountYIn": "0"
+        },
+        {
+          "amountX": "1113760628",
+          "amountY": "0",
+          "price": "4546183161936640015",
+          "liquiditySupply": "5063359813441577879316329420",
+          "rewardPerTokenStored": [
+            "0",
+            "0"
+          ],
+          "feeAmountXPerTokenStored": "0",
+          "feeAmountYPerTokenStored": "0",
+          "amountXIn": "0",
+          "amountYIn": "0"
+        }
+      ]
+    }
+  }

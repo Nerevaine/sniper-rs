@@ -7,11 +7,14 @@ use crate::dex::raydium_clmm::{RaydiumClmmLayout, print_raydium_clmm_layout, RAY
 use crate::dex::solfi::{SolFiLayout, print_solfi_layout, SOLFI_POOL_SIZE};
 use crate::dex::meteora_dlmm::{
     METEORA_DLMM_POOL_SIZE,
+    METEORA_DLMM_ORACLE_SIZE,
     METEORA_DLMM_BIN_ARRAY_SIZE,
     MeteoraLayout,
-    BinArrayLayout,
+    OracleLayout,
+    BinArrayLayout,  // Add this line
     print_meteora_layout,
-    print_bin_array_layout
+    print_oracle_layout,
+    print_bin_array_layout,
 };
 
 
@@ -98,6 +101,11 @@ pub fn meteora_dlmm(account_key: String, buffer: Vec<u8>) {
         match MeteoraLayout::try_from_slice_manual(buffer.as_slice()) {
             Some(meteora_data) => print_meteora_layout(account_key, &meteora_data),
             None => log::error!("无法解析 Meteora DLMM 数据: buffer长度 {}", buffer.len()),
+        }
+    } else if buffer.len() == METEORA_DLMM_ORACLE_SIZE {
+        match OracleLayout::try_from_slice_manual(buffer.as_slice()) {
+            Some(oracle_data) => print_oracle_layout(account_key, &oracle_data),
+            None => log::error!("无法解析 Meteora DLMM Oracle 数据: buffer长度 {}", buffer.len()),
         }
     } else if buffer.len() == METEORA_DLMM_BIN_ARRAY_SIZE {
         match BinArrayLayout::try_from_slice_manual(buffer.as_slice()) {

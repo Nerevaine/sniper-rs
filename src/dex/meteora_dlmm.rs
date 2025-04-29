@@ -1,10 +1,12 @@
 use log;
 use solana_program::pubkey::Pubkey;
-use crate::common::binary_reader::{read_pubkey, read_u64, read_u8, read_u16, read_u32, read_i32, read_i64};
+use crate::common::binary_reader::{read_pubkey, read_u64, read_u8, read_u16, read_u32, read_i32, read_i64, read_u128};
 
 // 账户数据大小常量
 pub const METEORA_DLMM_POOL_SIZE: usize = 904;
-pub const METEORA_DLMM_BIN_ARRAY_SIZE: usize = 3232; // 添加 BinArray 大小常量
+pub const METEORA_DLMM_ORACLE_SIZE: usize = 3232; // Oracle 账户大小常量
+pub const METEORA_DLMM_BIN_ARRAY_SIZE: usize = 10136; // 添加 BinArray 大小常量
+
 
 #[derive(Debug)]
 pub struct StaticParameters {
@@ -210,7 +212,7 @@ impl MeteoraLayout {
 }
 
 pub fn print_meteora_layout(account_key: String, data: &MeteoraLayout) {
-    log::info!("\n==================== Meteora DLMM 数据 ====================");
+    log::info!("==================== Meteora DLMM 数据 ====================");
     log::info!("Pool Address: (https://solscan.io/account/{}#anchorData)", account_key);
     
     // 打印 StaticParameters
@@ -273,61 +275,51 @@ pub fn print_meteora_layout(account_key: String, data: &MeteoraLayout) {
 }
 
 #[derive(Debug)]
-pub struct BinArrayLayout {
-    pub discriminator: u64,  // 账户类型识别码，占用 8 字节
-    pub idx: u64,            // BinArray 的索引，占用 8 字节
-    pub active_size: u64,    // 活跃的 bin 数量，占用 8 字节
-    pub length: u64,         // 总 bin 数量，占用 8 字节
-    pub bins: Vec<Bin>,      // bin 数组
+pub struct OracleLayout {
+    pub discriminator: u64,
+    pub idx: u64,
+    pub active_size: u64,
+    pub length: u64,
+    pub bins: Vec<BinData>,
 }
 
-#[derive(Debug, Clone)]
-pub struct Bin {
-    pub amount_x: u64,       // X 代币数量
-    pub amount_y: u64,       // Y 代币数量
-    pub price: u64,          // 价格
-    pub liquidity: u64,      // 流动性
+#[derive(Debug)]
+pub struct BinData {
+    pub amount_x: u64,
+    pub amount_y: u64,
+    pub price: u64,
+    pub liquidity: u64,
 }
 
-impl BinArrayLayout {
+impl OracleLayout {
     pub fn try_from_slice_manual(data: &[u8]) -> Option<Self> {
-        if data.len() != METEORA_DLMM_BIN_ARRAY_SIZE {
-            log::error!("BinArray 数据长度不匹配: 期望 {}, 实际 {}", METEORA_DLMM_BIN_ARRAY_SIZE, data.len());
+        if data.len() != METEORA_DLMM_ORACLE_SIZE {
+            log::error!("数据长度不匹配: 期望 {}, 实际 {}", METEORA_DLMM_ORACLE_SIZE, data.len());
             return None;
         }
 
-        let mut offset = 8; // 跳过 8 字节 discriminator
+        let mut offset = 8; // 跳过 discriminator
 
-        // 读取基本字段
-        let discriminator = {
-            let mut bytes = [0u8; 8];
-            bytes.copy_from_slice(&data[0..8]);
-            u64::from_le_bytes(bytes)
-        };
-        
+        let discriminator = read_u64(data, &mut offset);
         let idx = read_u64(data, &mut offset);
         let active_size = read_u64(data, &mut offset);
         let length = read_u64(data, &mut offset);
-        
-        // 计算 bin 的数量 (通常是 100)
-        let bin_count = length as usize;
-        let mut bins = Vec::with_capacity(bin_count);
-        
-        // 读取所有 bin 数据
-        for _ in 0..bin_count {
+
+        let mut bins = Vec::new();
+        while offset + 32 <= data.len() {
             let amount_x = read_u64(data, &mut offset);
             let amount_y = read_u64(data, &mut offset);
             let price = read_u64(data, &mut offset);
             let liquidity = read_u64(data, &mut offset);
             
-            bins.push(Bin {
+            bins.push(BinData {
                 amount_x,
                 amount_y,
                 price,
                 liquidity,
             });
         }
-        
+
         Some(Self {
             discriminator,
             idx,
@@ -338,9 +330,9 @@ impl BinArrayLayout {
     }
 }
 
-pub fn print_bin_array_layout(account_key: String, data: &BinArrayLayout) {
-    log::info!("==================== Meteora DLMM BinArray 数据 ====================");
-    log::info!("BinArray Address: (https://solscan.io/account/{}#anchorData)", account_key);
+pub fn print_oracle_layout(account_key: String, data: &OracleLayout) {
+    log::info!("==================== Meteora DLMM Oracle 数据 ====================");
+    log::info!("Oracle Address: (https://solscan.io/account/{}#anchorData)", account_key);
     
     log::info!("Discriminator: {}", data.discriminator);// discriminator 用于区分不同类型的账户
     log::info!("idx: {}", data.idx);
@@ -372,6 +364,96 @@ pub fn print_bin_array_layout(account_key: String, data: &BinArrayLayout) {
             log::info!("Bin[{}]: X={}, Y={}, Price={}, Liquidity={}", 
                 i, bin.amount_x, bin.amount_y, bin.price, bin.liquidity);
         }
+    }
+    
+    log::info!("==============================================================\n");
+}
+
+#[derive(Debug)]
+pub struct Bin {
+    pub amount_x: u64,
+    pub amount_y: u64,
+    pub price: u64,
+    pub liquidity_supply: u128,
+    pub reward_per_token_stored: [u64; 2],
+    pub fee_amount_x_per_token_stored: u64,
+    pub fee_amount_y_per_token_stored: u64,
+    pub amount_x_in: u64,
+    pub amount_y_in: u64,
+}
+
+#[derive(Debug)]
+pub struct BinArrayLayout {
+    pub index: i64,
+    pub version: u8,
+    pub padding: [u8; 7],
+    pub lb_pair: Pubkey,
+    pub bins: Vec<Bin>,
+}
+
+impl BinArrayLayout {
+    pub fn try_from_slice_manual(data: &[u8]) -> Option<Self> {
+        if data.len() != METEORA_DLMM_BIN_ARRAY_SIZE {
+            log::error!("数据长度不匹配: 期望 {}, 实际 {}", METEORA_DLMM_BIN_ARRAY_SIZE, data.len());
+            return None;
+        }
+
+        let mut offset = 8; // 跳过 discriminator
+
+        let index = read_i64(data, &mut offset);
+        let version = read_u8(data, &mut offset);
+        
+        let mut padding = [0u8; 7];
+        padding.copy_from_slice(&data[offset..offset + 7]);
+        offset += 7;
+
+        let lb_pair = read_pubkey(data, &mut offset);
+
+        let mut bins = Vec::with_capacity(70);
+        for _ in 0..70 {
+            let bin = Bin {
+                amount_x: read_u64(data, &mut offset),
+                amount_y: read_u64(data, &mut offset),
+                price: read_u64(data, &mut offset),
+                liquidity_supply: read_u128(data, &mut offset),
+                reward_per_token_stored: [read_u64(data, &mut offset), read_u64(data, &mut offset)],
+                fee_amount_x_per_token_stored: read_u64(data, &mut offset),
+                fee_amount_y_per_token_stored: read_u64(data, &mut offset),
+                amount_x_in: read_u64(data, &mut offset),
+                amount_y_in: read_u64(data, &mut offset),
+            };
+            bins.push(bin);
+        }
+
+        Some(Self {
+            index,
+            version,
+            padding,
+            lb_pair,
+            bins,
+        })
+    }
+}
+
+pub fn print_bin_array_layout(account_key: String, data: &BinArrayLayout) {
+    log::info!("==================== Meteora DLMM BinArray 数据 ====================");
+    log::info!("BinArray Address: (https://solscan.io/account/{}#anchorData)", account_key);
+    log::info!("Index: {}", data.index);
+    log::info!("Version: {}", data.version);
+    log::info!("LB Pair: {}", data.lb_pair);
+    
+    log::info!("\nBins 数据:");
+    for (i, bin) in data.bins.iter().enumerate() {
+        log::info!("Bin[{}]:", i);
+        log::info!("  Amount X: {}", bin.amount_x);
+        log::info!("  Amount Y: {}", bin.amount_y);
+        log::info!("  Price: {}", bin.price);
+        log::info!("  Liquidity Supply: {}", bin.liquidity_supply);
+        log::info!("  Reward Per Token Stored: {:?}", bin.reward_per_token_stored);
+        log::info!("  Fee Amount X Per Token: {}", bin.fee_amount_x_per_token_stored);
+        log::info!("  Fee Amount Y Per Token: {}", bin.fee_amount_y_per_token_stored);
+        log::info!("  Amount X In: {}", bin.amount_x_in);
+        log::info!("  Amount Y In: {}", bin.amount_y_in);
     }
     
     log::info!("==============================================================\n");
