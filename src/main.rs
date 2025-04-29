@@ -11,18 +11,13 @@ use yellowstone_grpc_proto::prelude::{
     SubscribeRequestPing, SubscribeUpdatePong, SubscribeRequestFilterAccounts,
 };
 use solana_sdk::pubkey::Pubkey;
-mod market;
+
 mod common {
     pub mod binary_reader;
 }
-mod dex {
-    pub mod pump;
-    pub mod raydium_lp_v4;
-    pub mod raydium_cpmm;
-    pub mod raydium_clmm;
-    pub mod solfi;
-    pub mod meteora_dlmm;  // 添加新模块
-}
+pub mod dex;
+mod dex_processor;
+use crate::dex_processor::{pump, raydium_lp_v4, raydium_cpmm, raydium_clmm, solfi, meteora_dlmm};
 
 /// 命令行参数结构体
 #[derive(Debug, Clone, Parser)]
@@ -142,7 +137,7 @@ async fn main() -> anyhow::Result<()> {
                         //     market::solfi(ammkey.clone(), buffer.clone())
                         // }
                         if owner == meteora_dlmm {
-                            market::meteora_dlmm(ammkey.clone(), buffer.clone())
+                            dex_processor::meteora_dlmm(ammkey.clone(), buffer.clone())
                         }
 
                     }
