@@ -1,11 +1,11 @@
-//! Rust gRPC DEX 处理库
+//! Rust gRPC DEX Processing Library
 //! 
-//! 该库提供了处理各种 DEX 协议数据的功能
+//! The library provides functions for processing data from various DEX protocols
 
 pub mod common;
- // 添加 config 模块
+ // Add the config module
 pub mod dex;
-pub mod dex_processor;  // 注意这里改成 pub
+pub mod dex_processor;  // Note the change to pub
 
-// 可以选择重导出常用的模块项
-pub use dex_processor::{raydium_lp_v4, raydium_cpmm, raydium_clmm};
+// Option to re-export frequently used module items
+pub use dex_processor::raydium_lp_v4;

@@ -11,37 +11,37 @@ pub const SERUM_MARKET_ACCOUNT_SIZE: usize = 388;
 #[derive(Debug, Clone)]
 #[allow(dead_code)]
 pub struct RaydiumLpV4Layout {
-    pub baseVault: Pubkey,        // 基础币种金库地址
-    pub quoteVault: Pubkey,       // 报价币种金库地址
-    pub baseMint: Pubkey,         // 基础币种铸币地址
-    pub quoteMint: Pubkey,        // 报价币种铸币地址
-    pub lpMint: Pubkey,           // LP 代币铸币地址
-    pub openOrders: Pubkey,       // OpenOrders 账户地址
-    pub marketId: Pubkey,         // 市场ID
-    pub marketProgramId: Pubkey,  // 市场程序ID
-    pub targetOrders: Pubkey,     // target orders 账户地址
+    pub baseVault: Pubkey,        // Base Currency Vault Address
+    pub quoteVault: Pubkey,       // Quote Coin Vault Address
+    pub baseMint: Pubkey,         // Base Coin Mint Address
+    pub quoteMint: Pubkey,        // Quote Coin Mint Address
+    pub lpMint: Pubkey,           // LP Token Mint Address
+    pub openOrders: Pubkey,       // OpenOrders Account Address
+    pub marketId: Pubkey,         // Market ID
+    pub marketProgramId: Pubkey,  // Market program ID
+    pub targetOrders: Pubkey,     // target orders - Account Address
 }
 
 impl RaydiumLpV4Layout {
     pub fn try_from_slice_manual(data: &[u8]) -> Option<Self> {
         if data.len() < RAYDIUM_LP_V4_ACCOUNT_SIZE {
-            log::error!("数据长度不足，无法解析 RaydiumLpV4Layout");
+            log::error!("Insufficient data length to parse RaydiumLpV4Layout");
             return None;
         }
 
-        // 从 Raydium AMM 账户数据的第 336 字节开始，依次解析各个 Pubkey 字段
+        // Starting at byte 336 of the Raydium AMM account data, each Pubkey field is parsed sequentially
         let mut offset = 336;
         
         Some(Self {
-            baseVault: read_pubkey(data, &mut offset),        // 基础币种金库地址
-            quoteVault: read_pubkey(data, &mut offset),       // 报价币种金库地址
-            baseMint: read_pubkey(data, &mut offset),         // 基础币种铸币地址
-            quoteMint: read_pubkey(data, &mut offset),        // 报价币种铸币地址
-            lpMint: read_pubkey(data, &mut offset),           // LP 代币铸币地址
-            openOrders: read_pubkey(data, &mut offset),       // OpenOrders 账户地址
-            marketId: read_pubkey(data, &mut offset),         // 市场ID
-            marketProgramId: read_pubkey(data, &mut offset),  // 市场程序ID
-            targetOrders: read_pubkey(data, &mut offset),     // target orders 账户地址
+            baseVault: read_pubkey(data, &mut offset),        // Base Currency Vault Address
+            quoteVault: read_pubkey(data, &mut offset),       // Quote Coin Vault Address
+            baseMint: read_pubkey(data, &mut offset),         // Base Coin Mint Address
+            quoteMint: read_pubkey(data, &mut offset),        // Quote Coin Mint Address
+            lpMint: read_pubkey(data, &mut offset),           // LP Token Mint Address
+            openOrders: read_pubkey(data, &mut offset),       // OpenOrders Account Address
+            marketId: read_pubkey(data, &mut offset),         // Market ID
+            marketProgramId: read_pubkey(data, &mut offset),  // Market program ID
+            targetOrders: read_pubkey(data, &mut offset),     // target orders Account Address
         })
     }
 }
@@ -81,8 +81,8 @@ pub struct SerumMarketLayout {
 
 impl SerumMarketLayout {
     pub fn slice_market(data: &[u8]) -> Option<Self> {
-        if data.len() < 388 { // 388是Serum市场账户的典型长度
-            log::error!("数据长度不足，无法解析 Serum_MarketLayout");
+        if data.len() < 388 { // 388 is the typical length of a Serum market account
+            log::error!("Insufficient data length to parse Serum_MarketLayout");
             return None;
         }
         let mut offset = 0;

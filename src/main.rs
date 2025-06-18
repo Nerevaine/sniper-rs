@@ -1,208 +1,164 @@
-// main.rs ---------------------------------------------------------------
+// src/main.rs
 use clap::Parser;
 use futures::{sink::SinkExt, stream::StreamExt};
 use log::info;
-use memoffset::offset_of;
-use mevbot_ws_rust::dex_processor;
-use solana_sdk::pubkey::Pubkey;
 use std::{collections::HashMap, env, str::FromStr};
 use tokio::time::{interval, Duration};
 use tonic::transport::channel::ClientTlsConfig;
+
+use solana_sdk::pubkey::Pubkey;
 use yellowstone_grpc_client::GeyserGrpcClient;
 use yellowstone_grpc_proto::{
     geyser::{
         subscribe_request_filter_accounts_filter::Filter as SubscribeFilterKind,
         subscribe_request_filter_accounts_filter_memcmp::Data as MemcmpData,
-        SubscribeRequestFilterAccountsFilter,
-        SubscribeRequestFilterAccountsFilterMemcmp,
+        SubscribeRequestFilterAccountsFilter, SubscribeRequestFilterAccountsFilterMemcmp,
     },
     prelude::{
         subscribe_update::UpdateOneof, CommitmentLevel, SubscribeRequest,
-        SubscribeRequestFilterAccounts, SubscribeRequestPing, SubscribeUpdatePong,
+        SubscribeRequestFilterAccounts, SubscribeRequestPing,
     },
 };
 
-// 💧 tu layout -----------------------------------------------------------
-mod instruction;             
-use instruction::decoder::LIQUIDITY_STATE_LAYOUT_V4;
+mod common;
+mod dex;
+mod dex_processor; // your existing parsers/printers
+mod instruction; // contains LIQUIDITY_STATE_LAYOUT_V4 + decode()
 
-// ────────────────────────────  CONSTANTES  ────────────────────────────────
-// ► Se obtienen del struct para no volver a fallar nunca.
-const DATASIZE_LIQUIDITY_V4: u64 =
-    std::mem::size_of::<LIQUIDITY_STATE_LAYOUT_V4>() as u64;
-const OFFSET_QUOTE_MINT:     u64 =
-    offset_of!(LIQUIDITY_STATE_LAYOUT_V4, quoteMint)        as u64;
-const OFFSET_MARKET_PROGRAM: u64 =
-    offset_of!(LIQUIDITY_STATE_LAYOUT_V4, marketProgramId)  as u64;
-
-// WSOL y OpenBook
-const WSOL_MINT: &str        = "So11111111111111111111111111111111111111112";
+// ─────────── constants ───────────────────────────────
+const RAYDIUM_PROGRAM_V4: &str = "675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8";
+const WSOL_MINT: &str = "So11111111111111111111111111111111111111112";
 const OPENBOOK_PROGRAM: &str = "srmqPvymJeFKQ4zGQed1GFppgkRHL9kaELCbyksJtPX";
 
-// Program IDs de Raydium
-const RAYDIUM_AMM_V4: &str = "675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8";
-const RAYDIUM_CPMM:   &str = "CPMMoo8L3F4NbTegBCKVNunggL7H1ZpdTHKxQB5qKP1C";
-const RAYDIUM_CLMM:   &str = "CAMMCzo5YL8w4VFF8KVHrK22GGUsp5VTaW7grrKgrWqK";
+// ─── byte offsets inside LIQUIDITY_STATE_LAYOUT_V4 ───────────
+use instruction::decoder::LIQUIDITY_STATE_LAYOUT_V4;
+use memoffset::offset_of;
 
-// ¿Ignorar el snapshot inicial?
-const SKIP_STARTUP: bool = true;
+const OFFSET_QUOTE_MINT:     u64 = 432;  // TS: quoteMint@432
+const OFFSET_MARKET_PROGRAM: u64 = 560;  // TS: marketProg@560
+const OFFSET_SWAP_QUOTE_IN:  u64 = 664;  // TS: swapQ@664
+const OFFSET_SWAP_BASE_OUT:  u64 = 688;  // TS: swapB@688
 
-/// Argumentos CLI
+// ───────── CLI args ──────────────────────────────────────
 #[derive(Debug, Clone, Parser)]
 #[clap(author, version, about)]
 struct Args {
-    /// Endpoint gRPC
+    /// gRPC endpoint
     #[clap(short, long,
            default_value_t = String::from("https://solana-yellowstone-grpc.publicnode.com"))]
     endpoint: String,
 
-    /// Token opcional x-token
+    /// optional x-token header
     #[clap(long)]
     x_token: Option<String>,
 }
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
+    /* ───── logging & args ───── */
     env::set_var(
         env_logger::DEFAULT_FILTER_ENV,
         env::var_os(env_logger::DEFAULT_FILTER_ENV).unwrap_or_else(|| "info".into()),
     );
     env_logger::init();
-    info!("bot启动中");
+    info!("bot");
 
     let args = Args::parse();
 
+    /* ───── gRPC connection ───── */
     let mut client = GeyserGrpcClient::build_from_shared(args.endpoint)?
         .x_token(args.x_token)?
         .tls_config(ClientTlsConfig::new().with_native_roots())?
         .connect()
         .await?;
-    let (mut subscribe_tx, mut stream) = client.subscribe().await?;
+    let (mut tx, mut stream) = client.subscribe().await?;
 
-    // ───── Filtros
-    let filter_datasize = SubscribeRequestFilterAccountsFilter {
-        filter: Some(SubscribeFilterKind::Datasize(DATASIZE_LIQUIDITY_V4)),
-    };
+    /* ───── build 4 filters ───── */
+    let zero = vec![0u8];
+    let f_quote = memcmp_filter(OFFSET_QUOTE_MINT, Pubkey::from_str(WSOL_MINT)?);
+    let f_market = memcmp_filter(OFFSET_MARKET_PROGRAM, Pubkey::from_str(OPENBOOK_PROGRAM)?);
+    let f_swap_q = byte_zero_filter(OFFSET_SWAP_QUOTE_IN);
+    let f_swap_b = byte_zero_filter(OFFSET_SWAP_BASE_OUT);
 
-    let filter_quote = SubscribeRequestFilterAccountsFilter {
-        filter: Some(SubscribeFilterKind::Memcmp(
-            SubscribeRequestFilterAccountsFilterMemcmp {
-                offset: OFFSET_QUOTE_MINT,
-                data: Some(MemcmpData::Bytes(
-                    Pubkey::from_str(WSOL_MINT)?.to_bytes().to_vec(),
-                )),
-            },
-        )),
-    };
-
-    let filter_market = SubscribeRequestFilterAccountsFilter {
-        filter: Some(SubscribeFilterKind::Memcmp(
-            SubscribeRequestFilterAccountsFilterMemcmp {
-                offset: OFFSET_MARKET_PROGRAM,
-                data: Some(MemcmpData::Bytes(
-                    Pubkey::from_str(OPENBOOK_PROGRAM)?.to_bytes().to_vec(),
-                )),
-            },
-        )),
-    };
-
+    info!(
+        "using filters → quote@{}  market@{}  swapQ@{}  swapB@{}",
+        OFFSET_QUOTE_MINT, OFFSET_MARKET_PROGRAM, OFFSET_SWAP_QUOTE_IN, OFFSET_SWAP_BASE_OUT
+    );
+    /* ───── accounts map ───── */
     let mut accounts: HashMap<String, SubscribeRequestFilterAccounts> = HashMap::new();
     accounts.insert(
-        "raydium".into(),
+        "new_lp_v4".into(),
         SubscribeRequestFilterAccounts {
-            account: vec![],
-            owner: vec![
-                RAYDIUM_AMM_V4.into(),
-                RAYDIUM_CPMM.into(),
-                RAYDIUM_CLMM.into(),
-            ],
-            filters: vec![filter_datasize, filter_quote, filter_market],
-            nonempty_txn_signature: None,
+            owner: vec![RAYDIUM_PROGRAM_V4.into()],
+            filters: vec![f_quote, f_market, f_swap_q, f_swap_b],
+            ..Default::default()
         },
     );
 
-    // ───── Subscripción + pings
     futures::try_join!(
-        // TX
+        /* TX task */
         async move {
-            subscribe_tx
-                .send(SubscribeRequest {
-                    accounts,
-                    commitment: Some(CommitmentLevel::Processed as i32),
+            tx.send(SubscribeRequest {
+                accounts,
+                commitment: Some(CommitmentLevel::Processed as i32),
+                ..Default::default()
+            })
+            .await?;
+
+            let mut ticker = interval(Duration::from_secs(3));
+            let mut id: i32 = 0;
+            loop {
+                ticker.tick().await;
+                id += 1;
+                tx.send(SubscribeRequest {
+                    ping: Some(SubscribeRequestPing { id }),
                     ..Default::default()
                 })
                 .await?;
-
-            let mut timer = interval(Duration::from_secs(3));
-            let mut id = 0;
-            loop {
-                timer.tick().await;
-                id += 1;
-                subscribe_tx
-                    .send(SubscribeRequest {
-                        ping: Some(SubscribeRequestPing { id }),
-                        ..Default::default()
-                    })
-                    .await?;
             }
             #[allow(unreachable_code)]
             Ok::<(), anyhow::Error>(())
         },
-        // RX
         async move {
-            while let Some(message) = stream.next().await {
-                let update = message?.update_oneof.expect("mensaje válido");
-                match update {
-                    UpdateOneof::Ping(_) => {
-                        // info!("ping received");
-                    }
-                    UpdateOneof::Pong(SubscribeUpdatePong { id }) =>
-                        info!("pong received: id#{id}"),
-
-                        UpdateOneof::Account(acc_msg) => {
-                            // if you still want to ignore the *initial* snapshot, keep this:
-                            if SKIP_STARTUP && acc_msg.is_startup {
-                                continue;
-                            }
-                        
-                            let account = acc_msg
-                                .account
-                                .as_ref()
-                                .ok_or_else(|| anyhow::anyhow!("Account message missing"))?;
-                        
-                            let ammkey = Pubkey::try_from(account.pubkey.as_slice())?.to_string();
-                            let owner  = Pubkey::try_from(account.owner.as_slice())?.to_string();
-                            let buffer = &account.data;
-                        
-                            // now attempt decode on *every* incoming update:
-                            let mut slice: &[u8] = buffer;
-                            match LIQUIDITY_STATE_LAYOUT_V4::decode(&mut slice) {
-                                Ok(state) => {
+            while let Some(msg) = stream.next().await {
+                let msg = msg?; // SubscribeUpdate
+                // log every incoming account message
+                if let Some(UpdateOneof::Account(acc)) = &msg.update_oneof {
+                    if let Some(acct) = &acc.account {
+                        let key = Pubkey::try_from(&acct.pubkey[..])?.to_string();
+                        let data = &acct.data;
+                        info!("→ got {} bytes for account {}", data.len(), key);
+        
+                        // now attempt decode V4 layout
+                        let mut slice: &[u8] = data;
+                        match LIQUIDITY_STATE_LAYOUT_V4::decode(&mut slice) {
+                            Ok(state) => {
+                                info!(
+                                    "counters → swapQuoteIn={}  swapBaseOut={}",
+                                    state.swapQuoteInAmount,
+                                    state.swapBaseOutAmount,
+                                );
+                                let pass_q = state.swapQuoteInAmount == 0;
+                                let pass_b = state.swapBaseOutAmount == 0;
+                                if pass_q && pass_b {
+                                    info!("NEW LP-V4 POOL: {}", key);
+                                    info!("  baseMint:     {}", state.baseMint);
+                                    info!("  lpMint:       {}", state.lpMint);
+                                    info!("  marketId:     {}", state.marketId);
+                                    info!("  poolOpenTime: {}", state.poolOpenTime);
+                                    dex_processor::raydium_lp_v4(key, acct.data.clone());
+                                } else {
                                     info!(
-                                        "► POOL {}  owner={}  status={}  openTime={}  quoteMint={}  marketProg={}",
-                                        ammkey,
-                                        owner,
-                                        state.status,
-                                        state.poolOpenTime,
-                                        state.quoteMint,
-                                        state.marketProgramId,
+                                        "skipped {}  pass_q={}  pass_b={}",
+                                        key, pass_q, pass_b
                                     );
-                        
-                                    // dispatch to your processors
-                                    match owner.as_str() {
-                                        RAYDIUM_AMM_V4 => dex_processor::raydium_lp_v4(ammkey.clone(), buffer.clone()),
-                                        RAYDIUM_CPMM  => dex_processor::raydium_cpmm (ammkey.clone(), buffer.clone()),
-                                        RAYDIUM_CLMM  => dex_processor::raydium_clmm (ammkey.clone(), buffer.clone()),
-                                        _ => {}
-                                    }
-                                }
-                                Err(e) => {
-                                    info!("⚠ decode error for {}: {:#?}", ammkey, e);
                                 }
                             }
-                        }                        
-
-                    msg => anyhow::bail!("mensaje inesperado: {msg:?}"),
+                            Err(err) => {
+                                info!("⚠ V4 decode failed for {}: {}", key, err);
+                            }
+                        }
+                    }
                 }
             }
             Ok::<(), anyhow::Error>(())
@@ -210,4 +166,29 @@ async fn main() -> anyhow::Result<()> {
     )?;
 
     Ok(())
+}
+
+// ─── helper constructors ───────────────────────────────────
+fn memcmp_filter(offset: u64, key: Pubkey) -> SubscribeRequestFilterAccountsFilter {
+    // pubkeys → BASE-58 (same as JS)
+    SubscribeRequestFilterAccountsFilter {
+        filter: Some(SubscribeFilterKind::Memcmp(
+            SubscribeRequestFilterAccountsFilterMemcmp {
+                offset,
+                data: Some(MemcmpData::Base58(key.to_string())),
+            },
+        )),
+    }
+}
+
+fn byte_zero_filter(offset: u64) -> SubscribeRequestFilterAccountsFilter {
+    // zero hacks → raw BYTES (exactly like the JS Uint8Array)
+    SubscribeRequestFilterAccountsFilter {
+        filter: Some(SubscribeFilterKind::Memcmp(
+            SubscribeRequestFilterAccountsFilterMemcmp {
+                offset,
+                data: Some(MemcmpData::Bytes(vec![0u8])),   // <── one single zero byte
+            },
+        )),
+    }
 }

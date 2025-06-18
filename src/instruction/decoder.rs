@@ -4,6 +4,7 @@ use solana_sdk::pubkey::Pubkey;
 
 pub const SOLC_MINT: Pubkey = pubkey!("So11111111111111111111111111111111111111112");
 
+#[repr(C)]                   
 #[allow(non_snake_case, non_camel_case_types)]
 #[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq)]
 pub struct LIQUIDITY_STATE_LAYOUT_V4 {
